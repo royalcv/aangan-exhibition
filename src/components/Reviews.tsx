@@ -43,16 +43,16 @@ const Reviews = () => {
 
   const stallholderReviews = [
     {
-      name: 'Vikram Arts & Crafts',
-      business: 'Handicrafts Vendor',
+      name: 'Ritu Wankhade',
+      business: 'Cosmatic',
       rating: 5,
-      review: 'Excellent platform to showcase our traditional pottery. Great footfall and very supportive organization team. Will definitely participate again next year.',
+      review: 'I am Ritu Wankhade. I have participated in many exhibitions, but when I joined Aangan for the first time, I launched some of my products there. The overwhelming response I received at the Aangan Grand Exhibition was something I had never experienced in any other exhibition before.Aangan is truly the best exhibition platform in Amravati. Visitors don’t just come as customers – they turn into long-term buyers and supporters. This has been my real and valuable experience with Aangan.',
     },
     {
-      name: 'Sarees by Sunita',
-      business: 'Textile Merchant',
+      name: 'Mansi kale',
+      business: 'Textile Merchant (Saree)',
       rating: 5,
-      review: 'Amazing response from customers! The exhibition provided perfect visibility for our handwoven textiles. Professional management and great customer flow.',
+      review: 'I have joined many exhibitions, but the experience at Aangan was completely different. Customers here don’t just shop once – they connect, trust, and become long-term buyers. Aangan gave a new identity to my sarees. People here valued the quality of my products and the effort behind them. It not only increased my sales but also gave me confidence and satisfaction. The foundation of my brand’s recognition was truly built at Aangan.',
     },
   ];
 
