@@ -1,5 +1,6 @@
 import { Star, Quote } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import image from '@/assets/name.png'
 
 const Reviews = () => {
   const customerReviews = [
@@ -7,37 +8,43 @@ const Reviews = () => {
       name: 'Priya Thakre',
       location: 'Amravati',
       rating: 5,
-      review: 'आंगण Exhibition म्हणजे परंपरा आणि कलात्मकतेचं अप्रतिम मिश्रण. प्रत्येक वस्तूत सौंदर्य, संस्कृती आणि नाजूकपणा दिसतो. खरेदी करताना मन आनंदाने भरून येतं.',
+      review: 'Loved the Angan Exhibition 💓! Such a wide range of products under one roof. The handmade stuff was absolutely worth buying. Definitely coming again!',
+      image:image
     },
     {
       name: 'Manjiri',
       location: 'Amravati',
       rating: 5,
-      review: 'आंगण Exhibition मधील वैविध्य आणि दर्जा पाहून मी भारावून गेले. नक्षीदार डिझाईन्स आणि उत्कृष्ट कापडं खूपच आकर्षक आहेत. इथे खरेदी करणं म्हणजे खूप खास अनुभव आहे.',
+      review: 'Friends सोबत आलो होते, आणि ambience खूपच lively होतं. Shopping + food stalls = perfect weekend plan 😍.',
+      image:image
     },
     {
       name: 'Sangeeta T',
       location: 'Amravati',
       rating: 5,
-      review: 'आंगण Exhibition म्हणजे परंपरा आणि आधुनिकतेचं सुंदर संगम. प्रत्येक वस्तू वेगळी आणि देखणी आहे. मी घेतलेल्या वस्तूंवर सर्वांनी कौतुकाचा वर्षाव केला.',
+      review: 'Exhibition खूपच छान वाटलं, specially ज्वेलरी section 🙈! Modern designs पण पारंपरिक touch सुद्धा होता. Totally loved it.',
+      image:image
     },
     {
       name: 'Sakshi Deshmukh',
       location: 'Amravati',
       rating: 5,
-      review: 'या प्रदर्शनात आले की वेळ कसा जातो कळतच नाही. सुंदर हस्तकला, आकर्षक डिझाईन्स आणि आपुलकीचा माहोल मनात घर करतो.',
+      review: 'The exhibition was well organized and the collection was unique. Prices could have been a little better, but overall a very good experience.',
+      image:image
     },
     {
       name: 'Neha Tosar',
       location: 'Paratwada',
       rating: 4,
-      review: 'इथली सगळी सजावट, वातावरण आणि विविधतेने भरलेला संग्रह पाहून डोळे तृप्त झाले. प्रदर्शनात प्रत्येक गोष्ट मनापासून तयार केलेली जाणवली.',
+      review: 'इथे घेतलेली साडी इतकी सुंदर आहे की सगळ्यांनी कौतुक केलं. प्रत्येक वस्तू मनापासून तयार केलेली जाणवली. खरंच अप्रतिम अनुभव.',
+      image:image
     },
      {
       name: 'Anita Patil',
       location: 'Warud',
       rating: 5,
       review: 'इथे शॉपिंग करताना इतक्या सुंदर वस्तू दिसतात की निवड करणेच कठीण होतं. प्रत्येक वस्तू अनोखी आणि मनाला भावणारी आहे',
+      image:image
     },
   ];
 
@@ -84,6 +91,12 @@ const Reviews = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {customerReviews.map((review, index) => (
               <Card key={index} className="bg-gradient-card border-border shadow-warm hover:shadow-glow transition-all duration-300">
+                      {/* Round image in top-right */}
+                      {/* <img
+                        src={review.image} // add image URL in your customerReviews data
+                        alt={review.name}
+                        className="absolute top-4 right-4 w-12 h-12 rounded-full border-2 border-white shadow-md"
+                      /> */}
                 <CardContent className="p-6">
                   <Quote className="h-8 w-8 text-primary mb-4" />
                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
