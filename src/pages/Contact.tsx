@@ -188,7 +188,7 @@ const Contact = () => {
                     </div>
 
                     <div>
-                      <Label htmlFor="message" className="text-foreground">Message *</Label>
+                      <Label htmlFor="message" className="text-foreground">Message/Feedback *</Label>
                       <Textarea
                         id="message"
                         name="message"
