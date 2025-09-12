@@ -87,7 +87,7 @@ const Home = () => {
                 Empowering Women, Enriching Communities 🌸
               </h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                For over 2+ years, Aangan Exhibition has been more than an event—it’s a movement. We provide a stage where women entrepreneurs, artisans, and innovators transform their passion into recognition. From unique crafts and homegrown businesses to inspiring stories of resilience, every exhibition reflects the strength, creativity, and spirit of women who shape our society.
+                For over 2+ years, Aangan Exhibition has been more than an event it’s a movement. We provide a stage where women entrepreneurs, artisans, and innovators transform their passion into recognition. From unique crafts and homegrown businesses to inspiring stories of resilience, every exhibition reflects the strength, creativity, and spirit of women who shape our society.
                 At Aangan, we don’t just showcase products we celebrate journeys, create opportunities, and build a community where women thrive and traditions flourish.
               </p>
               <Button variant="outline" asChild>
