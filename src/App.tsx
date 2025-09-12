@@ -21,7 +21,7 @@ const AppRoutes: React.FC = () => {
   useEffect(() => {
     if (location.pathname === "/") {
       setLoading(true);
-      const timer = setTimeout(() => setLoading(false), 1000); // 1 second
+      const timer = setTimeout(() => setLoading(false), 500); // 1 second
       return () => clearTimeout(timer);
     }
   }, [location]);
