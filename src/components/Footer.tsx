@@ -1,4 +1,4 @@
-import { MapPin, Phone, Mail, Calendar } from 'lucide-react';
+import { MapPin, Phone, Mail, Calendar, Facebook, Instagram, MessageCircle } from 'lucide-react';
 import aanganLogo from '@/assets/aangan-logo.png';
 
 const Footer = () => {
@@ -60,12 +60,41 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Bottom Section */}
         <div className="mt-8 pt-8 border-t border-border">
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
             <p className="text-xs text-muted-foreground">
               © 2025 Aangan Exhibition. All rights reserved.
             </p>
-            <div className="flex space-x-6 text-xs text-muted-foreground">
+            
+            {/* Social Media Links */}
+            <div className="flex space-x-4 mt-4 sm:mt-0">
+              <a 
+                href="https://www.facebook.com/share/1CN89HaZ7V/?mibextid=wwXIfr " 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="hover:text-primary transition-colors"
+              >
+                <Facebook size={50} strokeWidth={2.25} />
+              </a>
+              <a 
+                href="https://www.instagram.com/aangan_exhibition?igsh=YnQzN2w4cTE4MHZu&utm_source=qr " 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="hover:text-primary transition-colors"
+              >
+                <Instagram size={50} strokeWidth={2.25} />
+              </a>
+              <a 
+                href="https://wa.me/919270135692" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="hover:text-primary transition-colors"
+              >
+                <MessageCircle size={50} strokeWidth={2.25} />
+              </a>
+            </div>
+            <div className="flex items-center space-x-6 text-xs text-muted-foreground">
               <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
               <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
             </div>
@@ -77,3 +106,8 @@ const Footer = () => {
 };
 
 export default Footer;
+
+
+
+
+
