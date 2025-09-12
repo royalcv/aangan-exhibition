@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import aanganLogo from '@/assets/aangan-logo.png';
+import { Facebook, Instagram, MessageCircle } from 'lucide-react';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,6 +49,34 @@ const Navigation = () => {
                 {item.name}
               </Link>
             ))}
+
+            {/* Social Media Links (Desktop) */}
+            <div className="flex space-x-4 ml-6">
+              <a 
+                href="https://www.facebook.com/share/1CN89HaZ7V/?mibextid=wwXIfr" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="hover:text-primary transition-colors"
+              >
+                <Facebook size={20} strokeWidth={2.25} />
+              </a>
+              <a 
+                href="https://www.instagram.com/aangan_exhibition?igsh=YnQzN2w4cTE4MHZu&utm_source=qr" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="hover:text-primary transition-colors"
+              >
+                <Instagram size={20} strokeWidth={2.25} />
+              </a>
+              <a 
+                href="https://wa.me/919270135692" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="hover:text-primary transition-colors"
+              >
+                <MessageCircle size={20} strokeWidth={2.25} />
+              </a>
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -79,6 +108,34 @@ const Navigation = () => {
                   {item.name}
                 </Link>
               ))}
+
+              {/* Social Media Links (Mobile) */}
+              <div className="flex space-x-4 pt-4">
+                <a 
+                  href="https://www.facebook.com/share/1CN89HaZ7V/?mibextid=wwXIfr" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="hover:text-primary transition-colors"
+                >
+                  <Facebook size={20} strokeWidth={2.25} />
+                </a>
+                <a 
+                  href="https://www.instagram.com/aangan_exhibition?igsh=YnQzN2w4cTE4MHZu&utm_source=qr" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="hover:text-primary transition-colors"
+                >
+                  <Instagram size={20} strokeWidth={2.25} />
+                </a>
+                <a 
+                  href="https://wa.me/919270135692" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="hover:text-primary transition-colors"
+                >
+                  <MessageCircle size={20} strokeWidth={2.25} />
+                </a>
+              </div>
             </div>
           </div>
         )}
