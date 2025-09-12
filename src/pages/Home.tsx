@@ -48,13 +48,15 @@ const Home = () => {
                 Explore Exhibitions
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
+              <Button
+                size="lg"
+                variant="outline"
                 className="border-white text-white hover:bg-white hover:text-black"
                 asChild
               >
-                <Link to="/contact">Contact Us</Link>
+                <a href="https://wa.me/919270135692" target="_blank" rel="noopener noreferrer">
+                  Contact Us on WhatsApp
+                </a>
               </Button>
             </div>
           </div>
