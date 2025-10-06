@@ -49,7 +49,7 @@ const Home = () => {
                   <span className="text-xl font-extrabold">
                     Don’t Miss This Click Now
                    </span>
-                <ArrowRight className="ml-2 h-5 w-5" />
+              {/* / <ArrowRight className="ml-1 h-8 w-8" /> */}
               </Button>
               <Button
                 size="lg"
