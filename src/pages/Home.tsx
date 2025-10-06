@@ -44,8 +44,11 @@ const Home = () => {
                 From handcrafted creations to growing businesses, Aangan Exhibition is more than a showcase it's a launchpad for success, self-reliance, and recognition.✨
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-gradient-accent hover:opacity-90 text-black font-semibold">
-                Explore Exhibitions
+              <Button size="lg" className="bg-gradient-accent hover:opacity-90 text-black font-semibold"
+              onClick={() => window.open("https://www.facebook.com/NikitaGhate1327", "_blank")}>
+                  <span className="text-xl font-extrabold">
+                    Don’t Miss This Click Now
+                   </span>
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button
