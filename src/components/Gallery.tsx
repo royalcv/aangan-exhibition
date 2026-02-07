@@ -23,12 +23,6 @@ const Gallery = () => {
     { src: gallery3, alt: 'Luxury collection', title: 'Luxury Collection' },
   ];
 
-  const upcomingPoster = [
-    { src: gallery4, alt: 'Mehfil Inn', title: 'Mehfil Inn' },
-    { src: gallery5, alt: 'Mehfil Inn', title: 'Mehfil Inn' },
-    { src: gallery6, alt: 'Mehfil Inn', title: 'Mehfil Inn' },
-  ];
-
   const videos = [
     { src: gallery7 },
     { src: gallery8 },
@@ -70,38 +64,6 @@ const Gallery = () => {
         </div>
       </section>
 
-      {/* ================= Upcoming Posters ================= */}
-      {/* <section className="py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-accent bg-clip-text text-transparent">
-              Upcoming Exhibition Posters
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              Stay tuned for upcoming events
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {upcomingPoster.map((image, index) => (
-              <Card
-                key={index}
-                className="group overflow-hidden bg-gradient-card border-border shadow-warm hover:shadow-glow transition-all duration-300"
-              >
-                <CardContent className="p-0">
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="w-full h-96 object-cover transition-transform duration-500 group-hover:scale-110"
-                    loading="lazy"
-                  />
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
       {/* ================= Video Section ================= */}
       <section className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
@@ -114,7 +76,7 @@ const Gallery = () => {
             </p>
           </div>
 
-          {/* 2 Videos Per Row */}
+          {/* 2 per row desktop, 1 per row mobile (already responsive) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {videos.map((video, index) => (
               <VideoCard key={index} src={video.src} />
@@ -149,15 +111,15 @@ const VideoCard = ({ src }) => {
       <CardContent className="p-0">
         <div className="relative">
 
-          {/* Upcoming Badge */}
-          <div className="absolute bottom-4 left-4 z-10">
-            <span className="px-4 py-1 text-sm font-semibold text-white rounded-full
+          {/* 🔴 NEW: Upcoming badge responsive position */}
+          <div className="absolute bottom-3 left-3 z-10">
+            <span className="px-3 py-1 text-xs md:text-sm font-semibold text-white rounded-full
               backdrop-blur-md bg-white/20 border border-white/30">
               Upcoming
             </span>
           </div>
 
-          {/* Video */}
+          {/* 🔴 NEW: aspect-video instead of fixed height (mobile fix) */}
           <video
             ref={videoRef}
             src={src}
@@ -165,16 +127,18 @@ const VideoCard = ({ src }) => {
             muted
             loop
             playsInline
-            className="w-full h-80 object-cover"
+            className="w-full aspect-video object-cover"
           />
 
-          {/* Glass Controls */}
-          <div className="absolute inset-0 flex items-center justify-center gap-4
-            opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
+          {/* 🔴 NEW: Controls always visible on mobile, hover-only on desktop */}
+          <div className="absolute inset-0 flex items-center justify-center gap-3
+            opacity-100 md:opacity-0 md:group-hover:opacity-100
+            transition-opacity duration-300 bg-black/20">
 
+            {/* 🔴 NEW: Smaller buttons on mobile */}
             <button
               onClick={togglePlay}
-              className="w-14 h-14 rounded-full backdrop-blur-md bg-white/20
+              className="w-12 h-12 md:w-14 md:h-14 rounded-full backdrop-blur-md bg-white/20
               flex items-center justify-center hover:scale-110 transition"
             >
               {isPlaying ? <Pause className="text-white" /> : <Play className="text-white" />}
@@ -182,7 +146,7 @@ const VideoCard = ({ src }) => {
 
             <button
               onClick={toggleMute}
-              className="w-14 h-14 rounded-full backdrop-blur-md bg-white/20
+              className="w-12 h-12 md:w-14 md:h-14 rounded-full backdrop-blur-md bg-white/20
               flex items-center justify-center hover:scale-110 transition"
             >
               {isMuted ? <VolumeX className="text-white" /> : <Volume2 className="text-white" />}
