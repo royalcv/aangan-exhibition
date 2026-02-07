@@ -15,18 +15,19 @@ const Home = () => {
     { icon: Users, label: 'Visitors Annually', value: '100K+' },
     { icon: Award, label: 'Cultural Awards', value: '1' },
   ];
-    const typeText = useTypewriter(
+
+  const typeText = useTypewriter(
     "Aangan - Where Dreams Take Flight Empowering entrepreneurs with confidence, connections, and opportunities. From handcrafted creations to growing businesses, Aangan Exhibition is more than a showcase it's a launchpad for success, self-reliance, and recognition. ✨",
-    120,
-    2000
+    200,
+    5000
   );
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center">
+      <section className="relative min-h-screen flex items-start">
         <div className="absolute inset-0">
           <img
             src={heroImage}
@@ -35,35 +36,58 @@ const Home = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
         </div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-40">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6">
-              <span className="block text-white mb-4">Welcome to</span>
-              <span className="block bg-gradient-accent bg-clip-text text-transparent pt-2">
-                आंगण Exhibition
+
+            {/* Heading */}
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-[1.2]">
+              <span className="block text-white mb-4">
+                Welcome to
+              </span>
+
+              {/* Safe wrapper prevents “g” clipping */}
+              <span className="block pb-3">
+                <span className="block bg-gradient-accent bg-clip-text text-transparent">
+                  आंगण Exhibition
+                </span>
               </span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
-                Aangan - Where Dreams Take Flight
-                Empowering entrepreneurs with confidence, connections, and opportunities.
-                From handcrafted creations to growing businesses, Aangan Exhibition is more than a showcase it's a launchpad for success, self-reliance, and recognition.✨
-            </p>
+
+            {/* Typewriter text (fixed height to avoid movement) */}
+            <div className="mb-8 min-h-[140px] md:min-h-[160px]">
+              <p className="text-xl md:text-2xl text-white leading-relaxed font-light tracking-wide">
+                <span className="border-r-2 border-white pr-1 animate-pulse drop-shadow-[0_0_6px_rgba(255,255,255,0.8)]">
+                  {typeText}
+                </span>
+              </p>
+            </div>
+
+            {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-gradient-accent hover:opacity-90 text-black font-semibold"
-              onClick={() => window.open("https://www.facebook.com/NikitaGhate1327", "_blank")}>
-                  <span className="text-xl font-extrabold">
-                    Don’t Miss This Click Now
-                   </span>
-              {/* / <ArrowRight className="ml-1 h-8 w-8" /> */}
+              <Button
+                size="lg"
+                className="bg-gradient-accent hover:opacity-90 text-black font-semibold"
+                onClick={() =>
+                  window.open('https://www.facebook.com/NikitaGhate1327', '_blank')
+                }
+              >
+                <span className="text-xl font-extrabold">
+                  Don’t Miss This Click Now
+                </span>
               </Button>
+
               <Button
                 size="lg"
                 variant="outline"
                 className="border-white text-white hover:bg-white hover:text-black"
                 asChild
               >
-                <a href="https://wa.me/919270135692" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://wa.me/919270135692"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Contact Us on WhatsApp
                 </a>
               </Button>
@@ -81,8 +105,12 @@ const Home = () => {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-accent rounded-full mb-4">
                   <stat.icon className="h-8 w-8 text-black" />
                 </div>
-                <div className="text-3xl font-bold text-foreground mb-2">{stat.value}</div>
-                <div className="text-muted-foreground">{stat.label}</div>
+                <div className="text-3xl font-bold text-foreground mb-2">
+                  {stat.value}
+                </div>
+                <div className="text-muted-foreground">
+                  {stat.label}
+                </div>
               </div>
             ))}
           </div>
@@ -99,7 +127,6 @@ const Home = () => {
               </h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
                 For over 2+ years, Aangan Exhibition has been more than an event it’s a movement. We provide a stage where women entrepreneurs, artisans, and innovators transform their passion into recognition. From unique crafts and homegrown businesses to inspiring stories of resilience, every exhibition reflects the strength, creativity, and spirit of women who shape our society.
-                At Aangan, we don’t just showcase products we celebrate journeys, create opportunities, and build a community where women thrive and traditions flourish.
               </p>
               <Button variant="outline" asChild>
                 <Link to="/about">
@@ -108,11 +135,16 @@ const Home = () => {
                 </Link>
               </Button>
             </div>
+
             <div className="relative">
               <div className="bg-gradient-card rounded-lg p-8 border border-border shadow-warm">
-                <h3 className="text-xl font-semibold mb-4 text-foreground">Our Mission</h3>
+                <h3 className="text-xl font-semibold mb-4 text-foreground">
+                  Our Mission
+                </h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  To empower women entrepreneurs by giving them the platform, confidence, and market opportunities they deserve transforming their skills into identity, independence, and lasting success.🤗
+                  To empower women entrepreneurs by giving them the platform,
+                  confidence, and market opportunities they deserve — transforming
+                  their skills into identity, independence, and lasting success. 🤗
                 </p>
               </div>
             </div>
@@ -130,6 +162,7 @@ const Home = () => {
 
 export default Home;
 
+/* ================= Typewriter Hook ================= */
 const useTypewriter = (text, speed = 120, pause = 1500) => {
   const words = text.split(' ');
   const [displayed, setDisplayed] = useState('');
