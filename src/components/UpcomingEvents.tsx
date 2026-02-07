@@ -5,17 +5,17 @@ import { Button } from '@/components/ui/button';
 const UpcomingEvents = () => {
   const events = [
     {
-      title: 'Aangan The Grand Exhibition (Completed)',
-      date: 'August 1-3, 2025',
+      title: 'Aangan The Grand Exhibition (Upcoming)',
+      date: 'February 19-20, 2026',
       time: '10:00 AM - 10:00 PM',
       location: 'Abhiyanta Bhawan, Shegao naka, Amravati',
-      attendees: '30000+ expected in 3 days',
+      attendees: '40000+ expected in 2 days',
       description: 'A magnificent celebration of traditional arts, crafts, and cultural heritage featuring artisans from across India.',
       highlights: ['Fashion','Home Made','Home Decor','Traditional Crafts', 'Cultural Performances', 'Food Festival', 'Art'],
     },
     {
       title: 'Aangan The Grand Exhibition (Upcoming)',
-      date: 'October 10-11, 2025',
+      date: 'March 14-15, 2026',
       time: '10:00 AM - 10:00 PM',
       location: 'Hote Mehfil Inn, Camp Road, Amravati',
       attendees: '50000+ expected in 2 days',

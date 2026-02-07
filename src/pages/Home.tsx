@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Calendar, Users, Award } from 'lucide-react';
 import Navigation from '@/components/Navigation';
@@ -14,6 +15,11 @@ const Home = () => {
     { icon: Users, label: 'Visitors Annually', value: '100K+' },
     { icon: Award, label: 'Cultural Awards', value: '1' },
   ];
+    const typeText = useTypewriter(
+    "Aangan - Where Dreams Take Flight Empowering entrepreneurs with confidence, connections, and opportunities. From handcrafted creations to growing businesses, Aangan Exhibition is more than a showcase it's a launchpad for success, self-reliance, and recognition. ✨",
+    120,
+    2000
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -123,3 +129,29 @@ const Home = () => {
 };
 
 export default Home;
+
+const useTypewriter = (text, speed = 120, pause = 1500) => {
+  const words = text.split(' ');
+  const [displayed, setDisplayed] = useState('');
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (index < words.length) {
+      const timeout = setTimeout(() => {
+        setDisplayed(prev => prev + (prev ? ' ' : '') + words[index]);
+        setIndex(index + 1);
+      }, speed);
+
+      return () => clearTimeout(timeout);
+    } else {
+      const resetTimeout = setTimeout(() => {
+        setDisplayed('');
+        setIndex(0);
+      }, pause);
+
+      return () => clearTimeout(resetTimeout);
+    }
+  }, [index, words, speed, pause]);
+
+  return displayed;
+};
