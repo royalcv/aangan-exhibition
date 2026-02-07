@@ -1,13 +1,12 @@
 import { useRef, useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
-import gallery1 from '@/assets/gallery1.jpg';
-import gallery2 from '@/assets/bgi4.jpg';
-import gallery3 from '@/assets/backgroungImage1.jpg';
+
 import gallery7 from '@/assets/1.mp4';
 import gallery8 from '@/assets/2.mp4';
 import gallery9 from '@/assets/3.mp4';
 import gallery10 from '@/assets/4.mp4';
+
 import gallery11 from '@/assets/10.mp4';
 import gallery12 from '@/assets/11.mp4';
 import gallery13 from '@/assets/12.mp4';
@@ -32,35 +31,71 @@ import gallery31 from '@/assets/30.mp4';
 import gallery32 from '@/assets/31.mp4';
 import gallery33 from '@/assets/32.mp4';
 
-
-
 const GAP = 24;
+
+/* ---------------- EXHIBITION VIDEO ---------------- */
+
+const ExhibitionVideo = ({ src }) => {
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+
+    // 🔒 Always enforce mute
+    videoRef.current.muted = true;
+
+    if (isPlaying) {
+      videoRef.current.pause();
+    } else {
+      videoRef.current.play();
+    }
+
+    setIsPlaying(!isPlaying);
+  };
+
+  return (
+    <div className="relative aspect-square overflow-hidden group">
+      <video
+        ref={videoRef}
+        src={src}
+        preload="metadata"
+        playsInline
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+      />
+
+      {/* Glass Play / Pause */}
+      <button
+        onClick={togglePlay}
+        className="absolute inset-0 flex items-center justify-center bg-black/20"
+      >
+        <div className="
+          w-16 h-16 rounded-full
+          backdrop-blur-md bg-white/25
+          border border-white/30
+          flex items-center justify-center
+          hover:scale-110 transition
+        ">
+          {isPlaying ? (
+            <Pause className="text-white w-7 h-7" />
+          ) : (
+            <Play className="text-white w-7 h-7 ml-1" />
+          )}
+        </div>
+      </button>
+    </div>
+  );
+};
+
+/* ---------------- GALLERY ---------------- */
 
 const Gallery = () => {
   const exhibitionMedia = [
-{ type: 'video', src: gallery11 },
-{ type: 'video', src: gallery12 },
-{ type: 'video', src: gallery13 },
-{ type: 'video', src: gallery14 },
-{ type: 'video', src: gallery15 },
-{ type: 'video', src: gallery16 },
-{ type: 'video', src: gallery17 },
-{ type: 'video', src: gallery18 },
-{ type: 'video', src: gallery19 },
-{ type: 'video', src: gallery20 },
-{ type: 'video', src: gallery21 },
-{ type: 'video', src: gallery22 },
-{ type: 'video', src: gallery23 },
-{ type: 'video', src: gallery24 },
-{ type: 'video', src: gallery25 },
-{ type: 'video', src: gallery26 },
-{ type: 'video', src: gallery27 },
-{ type: 'video', src: gallery28 },
-{ type: 'video', src: gallery29 },
-{ type: 'video', src: gallery30 },
-{ type: 'video', src: gallery31 },
-{ type: 'video', src: gallery32 },
-{ type: 'video', src: gallery33 }
+    gallery11, gallery12, gallery13, gallery14, gallery15,
+    gallery16, gallery17, gallery18, gallery19, gallery20,
+    gallery21, gallery22, gallery23, gallery24, gallery25,
+    gallery26, gallery27, gallery28, gallery29, gallery30,
+    gallery31, gallery32, gallery33,
   ];
 
   const infiniteMedia = [...exhibitionMedia, ...exhibitionMedia];
@@ -75,11 +110,8 @@ const Gallery = () => {
       const cardWidth = isMobile ? 280 : window.innerWidth < 1024 ? 320 : 380;
       const step = cardWidth + GAP;
 
-      offset += 2;
-
-      if (offset >= exhibitionMedia.length * step) {
-        offset = 0;
-      }
+      offset += 1;
+      if (offset >= exhibitionMedia.length * step) offset = 0;
 
       if (trackRef.current) {
         trackRef.current.style.transform = `translateX(-${offset}px)`;
@@ -92,7 +124,7 @@ const Gallery = () => {
     return () => cancelAnimationFrame(animationId);
   }, []);
 
-  const videos = [
+  const upcomingVideos = [
     { src: gallery7 },
     { src: gallery8 },
     { src: gallery9 },
@@ -101,6 +133,7 @@ const Gallery = () => {
 
   return (
     <>
+      {/* ---------------- EXHIBITION GALLERY ---------------- */}
       <section className="pt-16 pb-8 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
@@ -113,37 +146,18 @@ const Gallery = () => {
           </div>
 
           <div className="overflow-hidden">
-            <div
-              ref={trackRef}
-              className="flex gap-6 will-change-transform"
-            >
-              {infiniteMedia.map((item, index) => (
+            <div ref={trackRef} className="flex gap-6 will-change-transform">
+              {infiniteMedia.map((src, index) => (
                 <Card
                   key={index}
-                  className="min-w-[240px] sm:min-w-[280px] md:min-w-[320px]
-                    group overflow-hidden bg-gradient-card border-border
-                    shadow-warm hover:shadow-glow transition-all duration-300"
+                  className="
+                    min-w-[240px] sm:min-w-[280px] md:min-w-[320px]
+                    overflow-hidden bg-gradient-card border-border
+                    shadow-warm hover:shadow-glow transition-all duration-300
+                  "
                 >
                   <CardContent className="p-0">
-                    <div className="relative aspect-square overflow-hidden">
-                      {item.type === 'image' ? (
-                        <img
-                          src={item.src}
-                          //alt={item.alt}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <video
-                          src={item.src}
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
-                      )}
-                    </div>
+                    <ExhibitionVideo src={src} />
                   </CardContent>
                 </Card>
               ))}
@@ -152,6 +166,7 @@ const Gallery = () => {
         </div>
       </section>
 
+      {/* ---------------- UPCOMING MOMENTS ---------------- */}
       <section className="pt-8 pb-16 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
@@ -164,7 +179,7 @@ const Gallery = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {videos.map((video, index) => (
+            {upcomingVideos.map((video, index) => (
               <VideoCard key={index} src={video.src} />
             ))}
           </div>
@@ -173,6 +188,8 @@ const Gallery = () => {
     </>
   );
 };
+
+/* ---------------- UPCOMING VIDEO CARD ---------------- */
 
 const VideoCard = ({ src }) => {
   const videoRef = useRef(null);
@@ -211,9 +228,11 @@ const VideoCard = ({ src }) => {
             className="w-full aspect-video object-cover"
           />
 
-          <div className="absolute inset-0 flex items-center justify-center gap-3
+          <div className="
+            absolute inset-0 flex items-center justify-center gap-3
             opacity-100 md:opacity-0 md:group-hover:opacity-100
-            transition-opacity duration-300 bg-black/20">
+            transition-opacity duration-300 bg-black/20
+          ">
             <button
               onClick={togglePlay}
               className="w-12 h-12 md:w-14 md:h-14 rounded-full backdrop-blur-md bg-white/20 flex items-center justify-center hover:scale-110 transition"
