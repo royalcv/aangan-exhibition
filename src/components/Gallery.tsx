@@ -110,7 +110,7 @@ const Gallery = () => {
       const cardWidth = isMobile ? 280 : window.innerWidth < 1024 ? 320 : 380;
       const step = cardWidth + GAP;
 
-      offset += 1;
+      offset += 0.5;
       if (offset >= exhibitionMedia.length * step) offset = 0;
 
       if (trackRef.current) {
