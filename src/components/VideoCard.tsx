@@ -32,7 +32,7 @@ const VideoCard: React.FC<VideoCardProps> = ({ src, poster }) => {
         poster={poster}
         muted
         playsInline
-        preload="metadata"
+        preload="auto"
         controls={false}
         disablePictureInPicture
       />
