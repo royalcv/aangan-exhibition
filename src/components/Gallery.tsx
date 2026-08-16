@@ -225,7 +225,7 @@ const VideoCard = ({ src }) => {
             muted
             loop
             playsInline
-            className="w-full aspect-video object-cover"
+            className="block w-full h-auto"
           />
 
           <div className="

@@ -51,10 +51,10 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3 text-sm text-muted-foreground">
                 <Calendar className="h-4 w-4 text-primary" />
-                <span>OCT 10-11, 2025</span>
+                <span>AUG 08-09, 2026</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Hotel Mehfil Inn, Camp Road, Amravati.
+                Abhiyanta Bhawan, Shegao naka, Amravati.
               </p>
             </div>
           </div>

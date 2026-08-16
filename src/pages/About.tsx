@@ -35,11 +35,11 @@ const About = () => {
   ];
 
   const achievements = [
-    { year: '2024', milestone: 'Founded Aangan Exhibition' },
-    { year: '01/2025', milestone: 'Successfully Conduct First Exhibition' },
-    { year: '08/2025', milestone: 'Successfully Conduct Second Exhibition' },
-    { year: '10/2025', milestone: 'Successfully Conduct Third Exhibition' },
-    { year: '2025', milestone: 'Celebrated 90,000+ annual visitors' },
+    { year: '2024', milestone: 'Aangan Exhibition was born.' },
+    { year: '5+', milestone: 'Successful Editions – Connecting thousands of visitors with local businesses.' },
+    { year: '90,000+', milestone: 'Visitors – Families, shoppers, and culture enthusiasts.' },
+    { year: '500+', milestone: 'Brands & Exhibitors' },
+    { year: '2026', milestone: 'Celebrated 90,000+ annual visitors' },
   ];
 
   return (

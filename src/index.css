@@ -112,12 +112,18 @@ All colors MUST be HSL.
 }
 
 @layer base {
+  html {
+    min-height: 100%;
+    background-color: hsl(var(--background));
+    overscroll-behavior-y: none;
+  }
+
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply min-h-screen bg-background text-foreground;
   }
 }
 

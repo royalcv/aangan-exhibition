@@ -6,7 +6,7 @@ const UpcomingEvents = () => {
   const events = [
     {
       title: 'Aangan The Grand Exhibition (Upcoming)',
-      date: 'February 19-20, 2026',
+      date: 'August 08-09, 2026',
       time: '10:00 AM - 10:00 PM',
       location: 'Abhiyanta Bhawan, Shegao naka, Amravati',
       attendees: '40000+ expected in 2 days',
@@ -15,9 +15,9 @@ const UpcomingEvents = () => {
     },
     {
       title: 'Aangan The Grand Exhibition (Upcoming)',
-      date: 'March 14-15, 2026',
+      date: 'August 22-23, 2026',
       time: '10:00 AM - 10:00 PM',
-      location: 'Hote Mehfil Inn, Camp Road, Amravati',
+      location: 'The Oak banquet hall, Rajapeth, Amravati',
       attendees: '50000+ expected in 2 days',
       description: 'Diwali Special Exhibition.',
       highlights: ['Fashion','Home Made','Home Decor','Traditional Crafts', 'Cultural Performances', 'Food Festival', 'Art','Heritage Exhibits', 'Live Demonstrations', 'Traditional Music', 'Handicraft Bazaar'],
