@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Calendar, Users, Award } from 'lucide-react';
+import { ArrowRight, Calendar, Users, Award, Play } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import Gallery from '@/components/Gallery';
@@ -65,16 +65,11 @@ const Home = () => {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                size="lg"
-                className="bg-gradient-accent hover:opacity-90 text-black font-semibold"
-                onClick={() =>
-                  window.open('https://www.facebook.com/NikitaGhate1327', '_blank')
-                }
-              >
-                <span className="text-xl font-extrabold">
-                  Don’t Miss This Click Now
-                </span>
+              <Button size="lg" className="bg-gradient-accent hover:opacity-90 text-black font-semibold" asChild>
+                <Link to="/videos" className="text-xl font-extrabold">
+                  <Play className="mr-2 h-5 w-5 fill-current" aria-hidden="true" />
+                  Watch Exhibition Highlights
+                </Link>
               </Button>
 
               <Button

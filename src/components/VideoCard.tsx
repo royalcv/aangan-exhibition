@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import galleryPoster from "@/assets/gallery1.jpg";
 
 type VideoCardProps = {
   src: string;
@@ -8,6 +9,7 @@ type VideoCardProps = {
 const VideoCard: React.FC<VideoCardProps> = ({ src, poster }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   const togglePlay = () => {
     const video = videoRef.current;
@@ -15,8 +17,17 @@ const VideoCard: React.FC<VideoCardProps> = ({ src, poster }) => {
 
     video.muted = true; // 🔒 always muted
 
+    if (!hasLoaded) {
+      video.src = src;
+      video.load();
+      void video.play();
+      setHasLoaded(true);
+      setIsPlaying(true);
+      return;
+    }
+
     if (video.paused) {
-      video.play();
+      void video.play();
       setIsPlaying(true);
     } else {
       video.pause();
@@ -28,11 +39,11 @@ const VideoCard: React.FC<VideoCardProps> = ({ src, poster }) => {
     <div className="video-card glass" onClick={togglePlay}>
       <video
         ref={videoRef}
-        src={src}
-        poster={poster}
+        src={undefined}
+        poster={poster ?? galleryPoster}
         muted
         playsInline
-        preload="auto"
+        preload="none"
         controls={false}
         disablePictureInPicture
       />

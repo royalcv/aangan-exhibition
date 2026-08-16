@@ -133,7 +133,7 @@ const VideoGallery = () => {
           <VideoCard
             key={index}
             src={video.src}
-            //poster={video.poster}
+            poster={video.poster}
           />
         ))}
       </div>
