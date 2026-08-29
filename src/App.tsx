@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -11,7 +11,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
-import VideoGallery from "./pages/VideoGallery";
+const VideoGallery = lazy(() => import("./pages/VideoGallery"));
 
 const queryClient = new QueryClient();
 
@@ -39,7 +39,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/videos" element={<VideoGallery />} />
+        <Route path="/videos" element={<Suspense fallback={<Loader />}><VideoGallery /></Suspense>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

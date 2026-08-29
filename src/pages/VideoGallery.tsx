@@ -1,4 +1,6 @@
-import VideoCard from "@/components/VideoCard";
+import { useState } from 'react';
+import LazyVideoCard from '@/components/LazyVideoCard';
+import { Button } from '@/components/ui/button';
 import '../style/videoGallery.css';
 import gallery11 from '@/assets/10.mp4';
 import gallery12 from '@/assets/11.mp4';
@@ -122,6 +124,8 @@ const videos = [
 ];
 
 const VideoGallery = () => {
+  const [visibleCount, setVisibleCount] = useState(8);
+
   return (
         <div className="min-h-screen bg-background">
       <Navigation />
@@ -129,14 +133,24 @@ const VideoGallery = () => {
       <h1 className="video-title">Video Gallery</h1>
 
       <div className="video-grid">
-        {videos.map((video, index) => (
-          <VideoCard
+        {videos.slice(0, visibleCount).map((video, index) => (
+          <LazyVideoCard
             key={index}
             src={video.src}
             poster={video.poster}
           />
         ))}
       </div>
+    </div>
+      <div className="mt-8 text-center">
+        {visibleCount < videos.length && (
+          <Button
+            onClick={() => setVisibleCount((count) => Math.min(count + 8, videos.length))}
+            variant="outline"
+          >
+            Show more videos
+          </Button>
+        )}
     </div>
     </div>
   );

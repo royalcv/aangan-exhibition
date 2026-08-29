@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Calendar, Users, Award, Play } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import Gallery from '@/components/Gallery';
+import Gallery from '@/components/OptimizedGallery';
 import Reviews from '@/components/Reviews';
 import UpcomingEvents from '@/components/UpcomingEvents';
 import heroImage from '@/assets/backGi3.jpg';
