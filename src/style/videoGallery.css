@@ -76,17 +76,7 @@ transform: translateZ(0);
   -webkit-backface-visibility: hidden;
 }
 
-/* =========================
-   GLASSMORPHISM
-========================= */
-
-.glass {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
-}
+/* Glassmorphism handled globally by the `.glass` utility in index.css */
 
 /* =========================
    OVERLAY

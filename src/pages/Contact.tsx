@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
+import { submitToGoogleForm } from '@/lib/googleForm';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -30,15 +32,22 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      await submitToGoogleForm(formData);
       toast({
         title: "Message Sent Successfully!",
         description: "Thank you for contacting us. We'll get back to you within 24 hours.",
       });
       setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    } catch (error) {
+      toast({
+        title: "Couldn't send your message",
+        description: "Please check your connection and try again, or reach us directly on WhatsApp.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   const contactInfo = [
@@ -68,13 +77,18 @@ const Contact = () => {
     },
   ];
 
+  const infoRef = useScrollReveal<HTMLDivElement>({ selector: '.reveal-item', stagger: 0.1 });
+  const formRef = useScrollReveal<HTMLDivElement>({ selector: '.reveal-item', y: 24 });
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       {/* Hero Section */}
-      <section className="py-24 px-4 bg-gradient-hero">
-        <div className="max-w-7xl mx-auto text-center">
+      <section className="relative overflow-hidden py-24 px-4 bg-gradient-hero">
+        <div className="pointer-events-none absolute -top-20 -right-20 h-72 w-72 rounded-full bg-secondary/20 blur-[100px] animate-float" />
+        <div className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)]" />
+        <div className="relative max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
             Contact Us
           </h1>
@@ -96,12 +110,13 @@ const Contact = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div ref={infoRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {contactInfo.map((info, index) => (
-              <Card key={index} className="bg-gradient-card border-border shadow-warm hover:shadow-glow transition-all duration-300">
+              <Card key={index} className="reveal-item glass glow-border-hover rounded-2xl">
                 <CardHeader className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-accent rounded-full mb-4 mx-auto">
-                    <info.icon className="h-6 w-6 text-black" />
+                  <div className="relative inline-flex items-center justify-center w-12 h-12 bg-gradient-accent rounded-full mb-4 mx-auto">
+                    <div className="absolute inset-0 rounded-full bg-primary/40 blur-lg animate-glow-pulse" />
+                    <info.icon className="relative h-6 w-6 text-black" />
                   </div>
                   <CardTitle className="text-lg font-semibold text-foreground">
                     {info.title}
@@ -122,12 +137,12 @@ const Contact = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
+          <div ref={formRef} className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="reveal-item">
               <h3 className="text-2xl font-bold mb-6 bg-gradient-accent bg-clip-text text-transparent">
                 Send us a Message
               </h3>
-              <Card className="bg-gradient-card border-border shadow-warm">
+              <Card className="glass glow-border rounded-2xl">
                 <CardContent className="p-6">
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -140,7 +155,7 @@ const Contact = () => {
                           required
                           value={formData.name}
                           onChange={handleInputChange}
-                          className="mt-1 bg-input border-border"
+                          className="mt-1 bg-input/60 border-border focus-visible:ring-secondary"
                           placeholder="Enter your full name"
                         />
                       </div>
@@ -153,7 +168,7 @@ const Contact = () => {
                           required
                           value={formData.email}
                           onChange={handleInputChange}
-                          className="mt-1 bg-input border-border"
+                          className="mt-1 bg-input/60 border-border focus-visible:ring-secondary"
                           placeholder="Enter your email"
                         />
                       </div>
@@ -168,7 +183,7 @@ const Contact = () => {
                           type="tel"
                           value={formData.phone}
                           onChange={handleInputChange}
-                          className="mt-1 bg-input border-border"
+                          className="mt-1 bg-input/60 border-border focus-visible:ring-secondary"
                           placeholder="Enter your phone number"
                         />
                       </div>
@@ -181,7 +196,7 @@ const Contact = () => {
                           required
                           value={formData.subject}
                           onChange={handleInputChange}
-                          className="mt-1 bg-input border-border"
+                          className="mt-1 bg-input/60 border-border focus-visible:ring-secondary"
                           placeholder="Enter message subject"
                         />
                       </div>
@@ -196,15 +211,16 @@ const Contact = () => {
                         rows={6}
                         value={formData.message}
                         onChange={handleInputChange}
-                        className="mt-1 bg-input border-border resize-none"
+                        className="mt-1 bg-input/60 border-border focus-visible:ring-secondary resize-none"
                         placeholder="Enter your message here..."
                       />
                     </div>
 
-                    <Button 
-                      type="submit" 
+                    <Button
+                      type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-gradient-accent hover:opacity-90 text-black font-semibold"
+                      variant="hero"
+                      className="w-full"
                     >
                       {isSubmitting ? (
                         'Sending Message...'
@@ -220,11 +236,11 @@ const Contact = () => {
               </Card>
             </div>
 
-            <div>
-              <h3 className="text-2xl font-bold mb-6 bg-gradient-accent bg-clip-text text-transparent">
+            <div className="reveal-item">
+              <h3 className="text-2xl font-bold mb-6 bg-gradient-cool bg-clip-text text-transparent">
                 Visit Our Location
               </h3>
-              <Card className="bg-gradient-card border-border shadow-warm mb-6">
+              <Card className="glass glow-border-cool rounded-2xl mb-6">
                 <CardContent className="p-6">
                   <h4 className="font-semibold text-foreground mb-4">Exhibition Grounds</h4>
                   <p className="text-muted-foreground mb-4 leading-relaxed">
@@ -238,7 +254,7 @@ const Contact = () => {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-card border-border shadow-warm">
+              <Card className="glass glow-border-hover rounded-2xl">
                 <CardContent className="p-6">
                   <h4 className="font-semibold text-foreground mb-4">Why Contact Us?</h4>
                   <ul className="space-y-2 text-sm text-muted-foreground">

@@ -2,6 +2,7 @@ import { Users, Target, History, Award } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const About = () => {
   const organizers = [
@@ -42,13 +43,21 @@ const About = () => {
     { year: '2026', milestone: 'Celebrated 90,000+ annual visitors' },
   ];
 
+  const missionRef = useScrollReveal<HTMLDivElement>({ selector: '.reveal-item' });
+  const timelineRef = useScrollReveal<HTMLDivElement>({ selector: '.reveal-item', stagger: 0.12 });
+  const organizersRef = useScrollReveal<HTMLDivElement>({ selector: '.reveal-item', stagger: 0.1 });
+  const membersRef = useScrollReveal<HTMLDivElement>({ selector: '.reveal-item', stagger: 0.06 });
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       {/* Hero Section */}
-      <section className="py-24 px-4 bg-gradient-hero">
-        <div className="max-w-7xl mx-auto text-center">
+      <section className="relative overflow-hidden py-24 px-4 bg-gradient-hero">
+        <div className="pointer-events-none absolute -top-20 -left-20 h-72 w-72 rounded-full bg-primary/20 blur-[100px] animate-float" />
+        <div className="pointer-events-none absolute -bottom-20 -right-20 h-72 w-72 rounded-full bg-secondary/20 blur-[100px] animate-float-reverse" />
+        <div className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)]" />
+        <div className="relative max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
             About Aangan Exhibition
           </h1>
@@ -60,9 +69,9 @@ const About = () => {
 
       {/* Mission & Vision */}
       <section className="py-16 px-4">
-        <div className="max-w-7xl mx-auto">
+        <div ref={missionRef} className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="bg-gradient-card border-border shadow-warm">
+            <Card className="reveal-item glass glow-border-hover rounded-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2 text-foreground">
                   <Target className="h-6 w-6 text-primary" />
@@ -76,10 +85,10 @@ const About = () => {
               </CardContent>
             </Card>
 
-            <Card className="bg-gradient-card border-border shadow-warm">
+            <Card className="reveal-item glass glow-border-cool-hover rounded-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2 text-foreground">
-                  <Award className="h-6 w-6 text-primary" />
+                  <Award className="h-6 w-6 text-secondary" />
                   <span>Our Vision</span>
                 </CardTitle>
               </CardHeader>
@@ -94,8 +103,9 @@ const About = () => {
       </section>
 
       {/* History Timeline */}
-      <section className="py-16 px-4 bg-muted/20">
-        <div className="max-w-7xl mx-auto">
+      <section className="relative py-16 px-4 overflow-hidden">
+        <div className="pointer-events-none absolute top-1/2 left-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-[140px]" />
+        <div className="relative max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-accent bg-clip-text text-transparent">
               Our Journey
@@ -105,14 +115,15 @@ const About = () => {
             </p>
           </div>
 
-          <div className="relative">
+          <div ref={timelineRef} className="relative">
             {achievements.map((achievement, index) => (
-              <div key={index} className="flex items-center mb-8 last:mb-0">
-                <div className="flex items-center justify-center w-20 h-20 bg-gradient-accent rounded-full text-black font-bold flex-shrink-0">
-                  {achievement.year}
+              <div key={index} className="reveal-item flex items-center mb-8 last:mb-0">
+                <div className="relative flex items-center justify-center w-20 h-20 bg-gradient-accent rounded-full text-black font-bold flex-shrink-0">
+                  <div className="absolute inset-0 rounded-full bg-primary/40 blur-xl animate-glow-pulse" />
+                  <span className="relative">{achievement.year}</span>
                 </div>
                 <div className="ml-6 flex-grow">
-                  <Card className="bg-gradient-card border-border shadow-warm">
+                  <Card className="glass glow-border-hover rounded-2xl">
                     <CardContent className="p-4">
                       <p className="text-foreground font-medium">{achievement.milestone}</p>
                     </CardContent>
@@ -136,9 +147,9 @@ const About = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div ref={organizersRef} className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {organizers.map((organizer, index) => (
-              <Card key={index} className="bg-gradient-card border-border shadow-warm hover:shadow-glow transition-all duration-300">
+              <Card key={index} className="reveal-item glass glow-border-hover rounded-2xl">
                 <CardHeader>
                   <CardTitle className="text-foreground">{organizer.name}</CardTitle>
                   <p className="text-primary font-semibold">{organizer.position}</p>
@@ -156,10 +167,10 @@ const About = () => {
       </section>
 
       {/* Team Members */}
-      <section className="py-16 px-4 bg-muted/20">
+      <section className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-accent bg-clip-text text-transparent">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-cool bg-clip-text text-transparent">
               Team Members
             </h2>
             <p className="text-lg text-muted-foreground">
@@ -167,12 +178,12 @@ const About = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div ref={membersRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {members.map((member, index) => (
-              <Card key={index} className="bg-gradient-card border-border shadow-warm hover:shadow-glow transition-all duration-300">
+              <Card key={index} className="reveal-item glass glow-border-cool-hover rounded-2xl">
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-foreground mb-1">{member.name}</h3>
-                  <p className="text-primary text-sm font-medium mb-2">{member.role}</p>
+                  <p className="text-secondary text-sm font-medium mb-2">{member.role}</p>
                   <p className="text-xs text-muted-foreground">{member.specialization}</p>
                 </CardContent>
               </Card>

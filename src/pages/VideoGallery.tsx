@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import LazyVideoCard from '@/components/LazyVideoCard';
 import { Button } from '@/components/ui/button';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import '../style/videoGallery.css';
 import gallery11 from '@/assets/10.mp4';
 import gallery12 from '@/assets/11.mp4';
@@ -25,133 +28,78 @@ import gallery30 from '@/assets/29.mp4';
 import gallery31 from '@/assets/30.mp4';
 import gallery32 from '@/assets/31.mp4';
 import gallery33 from '@/assets/32.mp4';
-import Navigation from '@/components/Navigation';
-
 
 const videos = [
-  {
-    src: gallery11,
-    poster: "/videos/poster1.jpg",
-  },
-  {
-    src: gallery12,
-    poster: "/videos/poster2.jpg",
-  },
-  {
-    src: gallery13,
-    poster: "/videos/poster3.jpg",
-  },
-  {
-    src: gallery14,
-    poster: "/videos/poster4.jpg",
-  },
-  {
-    src: gallery15,
-    poster: "/videos/poster5.jpg",
-  },
-  {
-    src: gallery16,
-    poster: "/videos/poster6.jpg",
-  },
-  {
-    src: gallery17,
-    poster: "/videos/poster7.jpg",
-  },
-  {
-    src: gallery18,
-    poster: "/videos/poster8.jpg",
-  },
-  {
-    src: gallery19,
-    poster: "/videos/poster9.jpg",
-  },
-  {
-    src: gallery20,
-    poster: "/videos/poster10.jpg",
-  },
-  {
-    src: gallery21,
-    poster: "/videos/poster11.jpg",
-  },
-  {
-    src: gallery22,
-    poster: "/videos/poster12.jpg",
-  },
-  {
-    src: gallery23,
-    poster: "/videos/poster13.jpg",
-  },
-  {
-    src: gallery24,
-    poster: "/videos/poster14.jpg",
-  },
-  {
-    src: gallery25,
-    poster: "/videos/poster15.jpg",
-  },
-  {
-    src: gallery26,
-    poster: "/videos/poster16.jpg",
-  },
-  {
-    src: gallery27,
-    poster: "/videos/poster17.jpg",
-  },
-  {
-    src: gallery28,
-    poster: "/videos/poster18.jpg",
-  },
-  {
-    src: gallery29,
-    poster: "/videos/poster19.jpg",
-  },
-  {
-    src: gallery30,
-    poster: "/videos/poster20.jpg",
-  },
-  {
-    src: gallery31,
-    poster: "/videos/poster21.jpg",
-  },
-  {
-    src: gallery32,
-    poster: "/videos/poster22.jpg",
-  },
-  {
-    src: gallery33,
-    poster: "/videos/poster23.jpg",
-  }
+  { src: gallery11, poster: "/videos/poster1.jpg" },
+  { src: gallery12, poster: "/videos/poster2.jpg" },
+  { src: gallery13, poster: "/videos/poster3.jpg" },
+  { src: gallery14, poster: "/videos/poster4.jpg" },
+  { src: gallery15, poster: "/videos/poster5.jpg" },
+  { src: gallery16, poster: "/videos/poster6.jpg" },
+  { src: gallery17, poster: "/videos/poster7.jpg" },
+  { src: gallery18, poster: "/videos/poster8.jpg" },
+  { src: gallery19, poster: "/videos/poster9.jpg" },
+  { src: gallery20, poster: "/videos/poster10.jpg" },
+  { src: gallery21, poster: "/videos/poster11.jpg" },
+  { src: gallery22, poster: "/videos/poster12.jpg" },
+  { src: gallery23, poster: "/videos/poster13.jpg" },
+  { src: gallery24, poster: "/videos/poster14.jpg" },
+  { src: gallery25, poster: "/videos/poster15.jpg" },
+  { src: gallery26, poster: "/videos/poster16.jpg" },
+  { src: gallery27, poster: "/videos/poster17.jpg" },
+  { src: gallery28, poster: "/videos/poster18.jpg" },
+  { src: gallery29, poster: "/videos/poster19.jpg" },
+  { src: gallery30, poster: "/videos/poster20.jpg" },
+  { src: gallery31, poster: "/videos/poster21.jpg" },
+  { src: gallery32, poster: "/videos/poster22.jpg" },
+  { src: gallery33, poster: "/videos/poster23.jpg" },
 ];
 
 const VideoGallery = () => {
-  const [visibleCount, setVisibleCount] = useState(8);
+  const [visibleCount, setVisibleCount] = useState(videos.length);
+  const gridRef = useScrollReveal<HTMLDivElement>({ selector: '.reveal-item', stagger: 0.05, y: 24 });
 
   return (
-        <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <Navigation />
-    <div className="video-gallery-container">
-      <h1 className="video-title">Video Gallery</h1>
 
-      <div className="video-grid">
-        {videos.slice(0, visibleCount).map((video, index) => (
-          <LazyVideoCard
-            key={index}
-            src={video.src}
-            poster={video.poster}
-          />
-        ))}
+      <section className="relative overflow-hidden py-20 px-4 bg-gradient-hero">
+        <div className="pointer-events-none absolute -top-16 -left-16 h-72 w-72 rounded-full bg-primary/20 blur-[100px] animate-float" />
+        <div className="pointer-events-none absolute -bottom-16 -right-16 h-72 w-72 rounded-full bg-secondary/20 blur-[100px] animate-float-reverse" />
+        <div className="pointer-events-none absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)]" />
+        <div className="relative max-w-7xl mx-auto text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">Video Gallery</h1>
+          <p className="text-lg text-white/90 max-w-2xl mx-auto leading-relaxed">
+            Relive the sights and sounds of every Aangan Exhibition edition.
+          </p>
+        </div>
+      </section>
+
+      <div className="video-gallery-container">
+        <div ref={gridRef} className="video-grid">
+          {videos.slice(0, visibleCount).map((video, index) => (
+            <LazyVideoCard
+              key={index}
+              src={video.src}
+              poster={video.poster}
+              className="reveal-item glow-border-hover"
+            />
+          ))}
+        </div>
       </div>
-    </div>
-      <div className="mt-8 text-center">
+
+      <div className="pb-20 text-center">
         {visibleCount < videos.length && (
           <Button
             onClick={() => setVisibleCount((count) => Math.min(count + 8, videos.length))}
-            variant="outline"
+            variant="cool"
           >
             Show more videos
           </Button>
         )}
-    </div>
+      </div>
+
+      <Footer />
     </div>
   );
 };

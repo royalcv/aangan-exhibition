@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import LazyVideoCard from '@/components/LazyVideoCard';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 import upcomingOne from '@/assets/1.mp4';
 import upcomingTwo from '@/assets/2.mp4';
 import upcomingThree from '@/assets/3.mp4';
@@ -28,58 +29,63 @@ const upcomingVideos = [
   { src: upcomingFour, poster: '/videos/upcoming-4.jpg' },
 ];
 
-const OptimizedGallery = () => (
-  <>
-    <section className="pt-16 pb-8 px-4">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-8 text-center">
-          <h2 className="mb-4 bg-gradient-accent bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
-            Exhibition Gallery
-          </h2>
-          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Glimpses from our exhibitions — moments in motion and stills
-          </p>
-        </div>
+const OptimizedGallery = () => {
+  const galleryRef = useScrollReveal<HTMLDivElement>({ selector: '.reveal-item', stagger: 0.08 });
+  const upcomingRef = useScrollReveal<HTMLDivElement>({ selector: '.reveal-item', stagger: 0.1 });
 
-        <div className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4">
-          {exhibitionVideos.map((video, index) => (
-            <Card key={video.src} className="min-w-[240px] snap-start overflow-hidden border-border bg-gradient-card shadow-warm sm:min-w-[280px] md:min-w-[320px]">
-              <CardContent className="p-0">
-                <LazyVideoCard src={video.src} poster={video.poster} />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+  return (
+    <>
+      <section className="pt-16 pb-8 px-4">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-8 text-center">
+            <h2 className="mb-4 bg-gradient-accent bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
+              Exhibition Gallery
+            </h2>
+            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+              Glimpses from our exhibitions — moments in motion and stills
+            </p>
+          </div>
 
-        <div className="mt-4 text-center">
-          <Link to="/videos" className="inline-flex rounded-md border border-primary px-5 py-2 font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground">
-            View all exhibition videos
-          </Link>
-        </div>
-      </div>
-    </section>
+          <div ref={galleryRef} className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4">
+            {exhibitionVideos.map((video, index) => (
+              <Card key={video.src} className="reveal-item glass glow-border-hover min-w-[240px] snap-start overflow-hidden rounded-2xl sm:min-w-[280px] md:min-w-[320px]">
+                <CardContent className="p-0">
+                  <LazyVideoCard src={video.src} poster={video.poster} />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
 
-    <section className="pt-8 pb-16 px-4">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-12 text-center">
-          <h2 className="mb-4 bg-gradient-accent bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
-            Upcoming Moments
-          </h2>
-          <p className="text-lg text-muted-foreground">Experience the vibe through motion</p>
+          <div className="mt-4 text-center">
+            <Link to="/videos" className="glass glow-border-cool-hover inline-flex rounded-full px-5 py-2 font-semibold text-secondary transition-colors">
+              View all exhibition videos
+            </Link>
+          </div>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          {upcomingVideos.map((video) => (
-            <Card key={video.src} className="overflow-hidden border-border bg-gradient-card shadow-warm">
-              <CardContent className="p-0">
-                <LazyVideoCard src={video.src} poster={video.poster} aspectRatio="wide" label="Upcoming" />
-              </CardContent>
-            </Card>
-          ))}
+      <section className="pt-8 pb-16 px-4">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 bg-gradient-cool bg-clip-text text-3xl font-bold text-transparent md:text-4xl">
+              Upcoming Moments
+            </h2>
+            <p className="text-lg text-muted-foreground">Experience the vibe through motion</p>
+          </div>
+
+          <div ref={upcomingRef} className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {upcomingVideos.map((video) => (
+              <Card key={video.src} className="reveal-item glass glow-border-cool-hover overflow-hidden rounded-2xl">
+                <CardContent className="p-0">
+                  <LazyVideoCard src={video.src} poster={video.poster} aspectRatio="wide" label="Upcoming" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
-  </>
-);
+      </section>
+    </>
+  );
+};
 
 export default OptimizedGallery;

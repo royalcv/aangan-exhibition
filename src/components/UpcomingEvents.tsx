@@ -1,8 +1,11 @@
 import { Calendar, MapPin, Clock, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const UpcomingEvents = () => {
+  const gridRef = useScrollReveal<HTMLDivElement>({ selector: '.reveal-item', stagger: 0.12 });
+
   const events = [
     {
       title: 'Aangan The Grand Exhibition (Upcoming)',
@@ -36,11 +39,12 @@ const UpcomingEvents = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div ref={gridRef} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {events.map((event, index) => (
-            <Card key={index} className="bg-gradient-card border-border shadow-warm hover:shadow-glow transition-all duration-300 overflow-hidden">
-              <CardHeader className="bg-gradient-hero text-primary-foreground">
-                <CardTitle className="text-xl font-bold">{event.title}</CardTitle>
+            <Card key={index} className="reveal-item glass glow-border-hover overflow-hidden rounded-2xl">
+              <CardHeader className="relative bg-gradient-hero text-primary-foreground">
+                <div className="pointer-events-none absolute inset-0 bg-grid opacity-20" />
+                <CardTitle className="relative text-xl font-bold">{event.title}</CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
                 <p className="text-sm text-muted-foreground leading-relaxed">

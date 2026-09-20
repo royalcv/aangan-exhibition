@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import { Pause, Play } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 type LazyVideoCardProps = {
   src: string;
   poster: string;
   aspectRatio?: 'square' | 'wide';
   label?: string;
+  className?: string;
 };
 
 const activeVideoEvent = 'aangan:active-video';
 
-const LazyVideoCard = ({ src, poster, aspectRatio = 'square', label }: LazyVideoCardProps) => {
+const LazyVideoCard = ({ src, poster, aspectRatio = 'square', label, className }: LazyVideoCardProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [hasSource, setHasSource] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -71,7 +73,7 @@ const LazyVideoCard = ({ src, poster, aspectRatio = 'square', label }: LazyVideo
   };
 
   return (
-    <div className="video-card glass group relative" style={{ aspectRatio: aspectRatio === 'wide' ? '16 / 9' : '1 / 1' }}>
+    <div className={cn('video-card glass group relative', className)} style={{ aspectRatio: aspectRatio === 'wide' ? '16 / 9' : '1 / 1' }}>
       {label ? (
         <span className="absolute bottom-3 left-3 z-10 rounded-full border border-white/30 bg-white/20 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md">
           {label}

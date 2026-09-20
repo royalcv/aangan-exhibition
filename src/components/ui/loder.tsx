@@ -1,52 +1,28 @@
 import React from "react";
-import aanganLogo from "@/assets/aangan-logo.png"; // make sure the path is correct
+import aanganLogo from "@/assets/aangan-logo.webp";
 
 const Loader: React.FC = () => {
-  const loaderContainerStyle: React.CSSProperties = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    background: "white",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 9999,
-  };
-
-  const loaderStyle: React.CSSProperties = {
-    border: "8px solid #f3f3f3",
-    borderTop: "8px solid #3498db",
-    borderRadius: "50%",
-    width: "80px",
-    height: "80px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    animation: "spin 1s linear infinite",
-  };
-
-  const logoStyle: React.CSSProperties = {
-    width: "40px",
-    height: "40px",
-    borderRadius: "50%",
-    objectFit: "contain",
-  };
-
   return (
-    <div style={loaderContainerStyle}>
-      <div style={loaderStyle}>
-        <img src={aanganLogo} alt="Aangan Logo" style={logoStyle} />
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background">
+      <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-primary/20 blur-[100px] animate-float" />
+      <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-secondary/20 blur-[100px] animate-float-reverse" />
+
+      <div className="relative flex flex-col items-center gap-4">
+        <div className="relative flex h-20 w-20 items-center justify-center">
+          <span className="absolute inset-0 rounded-full border-2 border-white/10" />
+          <span
+            className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-primary border-r-secondary"
+            style={{ animationDuration: '1s' }}
+          />
+          <div className="absolute inset-0 rounded-full bg-primary/25 blur-lg animate-glow-pulse" />
+          <img
+            src={aanganLogo}
+            alt="Aangan Logo"
+            className="relative h-10 w-10 rounded-full object-contain"
+          />
+        </div>
+        <p className="text-sm font-medium tracking-wide text-muted-foreground">Loading Aangan Exhibition…</p>
       </div>
-      <style>
-        {`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `}
-      </style>
     </div>
   );
 };
