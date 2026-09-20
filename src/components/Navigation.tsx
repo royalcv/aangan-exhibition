@@ -38,9 +38,9 @@ const Navigation = () => {
               />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-accent bg-clip-text text-transparent">
+              <span className="block text-xl font-bold bg-gradient-accent bg-clip-text text-transparent">
                 आंगण
-              </h1>
+              </span>
               <p className="text-xs text-muted-foreground">The Grand Exhibition (Reg.No-513/2025)</p>
             </div>
           </Link>

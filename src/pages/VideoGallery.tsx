@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import Seo from '@/components/Seo';
+import { organizationSchema, breadcrumbSchema } from '@/lib/structuredData';
 import '../style/videoGallery.css';
 import gallery11 from '@/assets/10.mp4';
 import gallery12 from '@/assets/11.mp4';
@@ -61,6 +63,13 @@ const VideoGallery = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Exhibition Highlights & Video Gallery | Aangan Exhibition Amravati"
+        description="Watch highlights from Aangan Exhibition, Amravati's best exhibition for shopping, fashion, handicrafts, and cultural celebrations across Vidarbha."
+        path="/videos"
+        keywords="Aangan Exhibition videos, Amravati exhibition highlights, exhibition gallery Amravati, exhibition in Vidarbha video"
+        structuredData={[organizationSchema, breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Video Gallery', path: '/videos' }])]}
+      />
       <Navigation />
 
       <section className="relative overflow-hidden py-20 px-4 bg-gradient-hero">

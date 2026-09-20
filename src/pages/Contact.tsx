@@ -10,6 +10,8 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 import { submitToGoogleForm } from '@/lib/googleForm';
+import Seo from '@/components/Seo';
+import { organizationSchema, breadcrumbSchema } from '@/lib/structuredData';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -82,6 +84,13 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Contact Us | Aangan Exhibition Amravati"
+        description="Get in touch with Aangan Exhibition for stall bookings, sponsorships, and inquiries. Visit us in Amravati or reach out by phone, email, or WhatsApp."
+        path="/contact"
+        keywords="contact Aangan Exhibition, exhibition stall booking Amravati, sponsorship exhibition Amravati, exhibition inquiries Vidarbha"
+        structuredData={[organizationSchema, breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Contact', path: '/contact' }])]}
+      />
       <Navigation />
 
       {/* Hero Section */}

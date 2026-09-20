@@ -11,6 +11,8 @@ import heroImage from '@/assets/backGi3.webp';
 import { Link } from 'react-router-dom';
 import { gsap, prefersReducedMotion } from '@/lib/gsap';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import Seo from '@/components/Seo';
+import { organizationSchema, eventSchema, breadcrumbSchema } from '@/lib/structuredData';
 
 const Home = () => {
   const stats = [
@@ -47,6 +49,30 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Aangan Exhibition | Best Exhibition in Amravati & Vidarbha"
+        description="Aangan Exhibition is Amravati's most-loved exhibition, showcasing handicrafts, fashion, jewellery, and women entrepreneurs from across Vidarbha. Visit our next edition in Amravati."
+        path="/"
+        keywords="best exhibition in Amravati, exhibition in Vidarbha, Amravati exhibition, best shopping platform in Amravati, women entrepreneurs Amravati, handicraft exhibition Amravati, cultural exhibition Vidarbha"
+        structuredData={[
+          organizationSchema,
+          breadcrumbSchema([{ name: 'Home', path: '/' }]),
+          eventSchema({
+            name: 'Aangan The Grand Exhibition - Diwali Special (Rajapeth, Amravati)',
+            startDate: '2026-10-24T10:00:00+05:30',
+            endDate: '2026-10-25T22:00:00+05:30',
+            location: 'The Hotel Aurtus, Rajapeth, Amravati',
+            description: 'Diwali Special Exhibition featuring fashion, home decor, traditional crafts, cultural performances, and food stalls in Amravati.',
+          }),
+          eventSchema({
+            name: 'Aangan The Grand Exhibition - Diwali Special (Camp Road, Amravati)',
+            startDate: '2026-10-31T10:00:00+05:30',
+            endDate: '2026-11-01T22:00:00+05:30',
+            location: 'Hotel Mefhil Inn, Camp Road, Amravati',
+            description: 'Diwali Special Exhibition featuring fashion, home decor, traditional crafts, heritage exhibits, live demonstrations, and a handicraft bazaar in Amravati.',
+          }),
+        ]}
+      />
       <Navigation />
 
       {/* Hero Section */}

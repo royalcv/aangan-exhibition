@@ -3,6 +3,8 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
+import Seo from '@/components/Seo';
+import { organizationSchema, breadcrumbSchema } from '@/lib/structuredData';
 
 const About = () => {
   const organizers = [
@@ -50,6 +52,13 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="About Us | Aangan Exhibition - Amravati's Premier Cultural Exhibition"
+        description="Aangan Exhibition empowers women entrepreneurs and celebrates Amravati & Vidarbha's culture. Meet the team behind the best exhibition in Amravati, with 5+ editions and 90,000+ visitors."
+        path="/about"
+        keywords="Aangan Exhibition Amravati, best exhibition in Amravati, exhibition organizers Amravati, women entrepreneurs Vidarbha, cultural exhibition history Amravati"
+        structuredData={[organizationSchema, breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'About', path: '/about' }])]}
+      />
       <Navigation />
 
       {/* Hero Section */}
