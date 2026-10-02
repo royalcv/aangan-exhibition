@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import Seo from '@/components/Seo';
 import Reviews from '@/components/Reviews';
 import GoogleReviewCta from '@/components/GoogleReviewCta';
-import { GalleryPreview } from '@/features/gallery';
+import { GalleryPreview, UpcomingPreview } from '@/features/gallery';
 import Rangoli from '@/design/Rangoli';
 import { duration, ease } from '@/design/motion';
 import { editions, getNextEdition } from '@/data/editions';
@@ -173,8 +173,28 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Mission */}
+      <section className="ink-band on-ink">
+        <div className="page-wrap grid gap-10 py-16 md:grid-cols-2 md:gap-16 md:py-24">
+          <h2 className="text-3xl text-primary md:text-5xl">Empowering women, enriching communities</h2>
+          <div className="space-y-5 text-lg text-white/90">
+            <p>
+              Aangan is more than an event; it's a movement. We give women entrepreneurs, artisans and innovators a
+              stage where passion becomes recognition: unique crafts, homegrown businesses and stories of resilience.
+            </p>
+            <p>
+              Our mission is to give women entrepreneurs the platform, confidence and market they deserve, turning
+              their skills into identity, independence and lasting success.
+            </p>
+            <Button asChild variant="light">
+              <Link to="/about">About Aangan</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Editions */}
-      <section id="editions" className="page-wrap scroll-mt-24 pb-16 md:pb-24" aria-labelledby="editions-heading">
+      <section id="editions" className="page-wrap scroll-mt-24 pb-16 pt-10 md:pb-24 md:pt-14" aria-labelledby="editions-heading">
         <h2 id="editions-heading" className="max-w-2xl text-3xl md:text-5xl">
           The 2026 Diwali editions
         </h2>
@@ -182,7 +202,7 @@ const Home = () => {
           {editions.map((edition) => (
             <article
               key={edition.id}
-              className="grid gap-6 border-t-2 border-foreground/80 py-10 md:grid-cols-[2fr_3fr] md:gap-12"
+              className="grid gap-6 border-t-2 border-foreground/80 py-10 last:border-b-2 md:grid-cols-[2fr_3fr] md:gap-12"
             >
               <div>
                 <h3 className="font-display text-5xl leading-tight text-madder md:text-6xl">{edition.shortDate}</h3>
@@ -213,26 +233,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Mission */}
-      <section className="ink-band on-ink">
-        <div className="page-wrap grid gap-10 py-16 md:grid-cols-2 md:gap-16 md:py-24">
-          <h2 className="text-3xl text-primary md:text-5xl">Empowering women, enriching communities</h2>
-          <div className="space-y-5 text-lg text-white/90">
-            <p>
-              Aangan is more than an event; it's a movement. We give women entrepreneurs, artisans and innovators a
-              stage where passion becomes recognition: unique crafts, homegrown businesses and stories of resilience.
-            </p>
-            <p>
-              Our mission is to give women entrepreneurs the platform, confidence and market they deserve, turning
-              their skills into identity, independence and lasting success.
-            </p>
-            <Button asChild variant="light">
-              <Link to="/about">About Aangan</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
+      <UpcomingPreview />
       <GalleryPreview />
       <Reviews />
       <GoogleReviewCta />

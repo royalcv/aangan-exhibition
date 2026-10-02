@@ -2,3 +2,4 @@
 // so the whole feature can later move to its own Netlify site without touching the shell.
 export { default as GalleryPage } from './GalleryPage';
 export { default as GalleryPreview } from './GalleryPreview';
+export { default as UpcomingPreview } from './UpcomingPreview';

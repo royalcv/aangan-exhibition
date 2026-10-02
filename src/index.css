@@ -128,7 +128,21 @@
   }
 }
 
+/* Gentle forward nudge for arrows on "Watch more" style buttons. */
+@keyframes nudge-x {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
+
 @layer utilities {
+  .animate-nudge {
+    animation: nudge-x 1.4s ease-in-out infinite;
+  }
   .rangoli-turn {
     transform-box: fill-box;
     transform-origin: center;
@@ -151,7 +165,8 @@
   html {
     scroll-behavior: auto;
   }
-  .rangoli-turn {
+  .rangoli-turn,
+  .animate-nudge {
     animation: none;
   }
   *,
