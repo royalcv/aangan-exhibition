@@ -2,81 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Aangan Exhibition Design System - Inspired by traditional Indian aesthetics
-All colors MUST be HSL.
+/*
+  Aangan design tokens — "the courtyard".
+  Limewashed wall (background), indigo-dyed ink (foreground), turmeric (action),
+  madder-red (emphasis), peacock teal (secondary). All colours are HSL channels.
+  See src/design/tokens.md for the rationale and contrast pairs.
 */
-
 @layer base {
   :root {
-    /* Cool navy-slate base with gold as the brand accent + teal as the secondary cool accent */
-    --background: 224 38% 6%;
-    --foreground: 210 40% 92%;
+    --background: 150 14% 94%;
+    --foreground: 232 45% 14%;
 
-    --card: 224 32% 10%;
-    --card-foreground: 210 35% 92%;
+    --card: 0 0% 100%;
+    --card-foreground: 232 45% 14%;
 
-    --popover: 224 36% 8%;
-    --popover-foreground: 210 40% 92%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 232 45% 14%;
 
-    --primary: 45 85% 55%;
-    --primary-foreground: 224 38% 6%;
+    --primary: 41 96% 52%;
+    --primary-foreground: 232 45% 12%;
 
-    --secondary: 190 85% 55%;
-    --secondary-foreground: 224 38% 6%;
+    --secondary: 183 70% 26%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 224 22% 16%;
-    --muted-foreground: 215 20% 68%;
+    --muted: 150 12% 88%;
+    --muted-foreground: 232 20% 32%;
 
-    --accent: 190 45% 18%;
-    --accent-foreground: 190 90% 85%;
+    --accent: 338 55% 93%;
+    --accent-foreground: 338 72% 30%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 42%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 224 25% 20%;
-    --input: 224 25% 16%;
-    --ring: 190 85% 55%;
+    --border: 150 10% 80%;
+    --input: 150 10% 70%;
+    --ring: 338 72% 40%;
 
-    /* Custom exhibition colors */
-    --exhibition-gold: 45 85% 55%;
-    --exhibition-bronze: 35 60% 40%;
-    --exhibition-dark: 224 38% 6%;
-    --exhibition-warm: 40 90% 65%;
-    --exhibition-teal: 190 85% 55%;
-    --exhibition-indigo: 235 70% 65%;
+    /* Brand colours that don't map onto the shadcn roles */
+    --ink: 232 45% 10%;
+    --madder: 338 72% 40%;
 
-    /* Gradients for visual appeal */
-    --gradient-hero: linear-gradient(135deg, hsl(45 85% 55% / 0.85), hsl(190 85% 45% / 0.55));
-    --gradient-card: linear-gradient(145deg, hsl(224 32% 10%), hsl(224 36% 8%));
-    --gradient-accent: linear-gradient(90deg, hsl(45 85% 55%), hsl(40 90% 65%));
-    --gradient-cool: linear-gradient(90deg, hsl(190 85% 55%), hsl(235 70% 65%));
-
-    /* Shadows */
-    --shadow-warm: 0 10px 30px -5px hsl(45 85% 55% / 0.2);
-    --shadow-deep: 0 20px 50px -10px hsl(224 38% 4% / 0.8);
-    --shadow-glow: 0 0 30px hsl(45 85% 55% / 0.3);
-    --shadow-glow-cool: 0 0 30px hsl(190 85% 55% / 0.35);
-
-    /* Glass surfaces */
-    --glass-bg: 224 32% 12%;
-    --glass-border: 45 85% 55%;
-
-    --radius: 1rem;
+    --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
@@ -85,7 +59,8 @@ All colors MUST be HSL.
   html {
     min-height: 100%;
     background-color: hsl(var(--background));
-    overscroll-behavior-y: none;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   * {
@@ -93,112 +68,97 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply min-h-screen bg-background text-foreground;
+    @apply min-h-screen bg-background font-sans text-base leading-relaxed text-foreground antialiased;
+  }
+
+  /* Yatra One ships one weight; keep headings at 400 so the browser never fakes a bold. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-normal;
+    text-wrap: balance;
+    /* Devanagari matras need more line-height than Latin to avoid clipping. */
+    line-height: 1.25;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 3px solid hsl(var(--ring));
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Focus ring that stays visible on the dark indigo bands */
+  .on-ink :focus-visible {
+    outline-color: hsl(var(--primary));
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.45);
   }
 }
 
-/* Hide scrollbar but keep scroll */
-.scrollbar-hide {
-  scrollbar-width: none;
-}
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+@layer components {
+  /* Row of turmeric dots — the courtyard's threshold line. Used only as a section divider. */
+  .dot-rule {
+    height: 6px;
+    background-image: radial-gradient(circle, hsl(var(--primary)) 2px, transparent 2.5px);
+    background-size: 16px 6px;
+    background-repeat: repeat-x;
+  }
+
+  .ink-band {
+    background-color: hsl(var(--ink));
+    color: hsl(0 0% 96%);
+  }
+
+  .page-wrap {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
 }
 
-/* ============ Futuristic glass / glow system ============ */
+/* Slow ambient turn for the hero rangoli: 110s per revolution, inner half reversed at 70s. */
+@keyframes rangoli-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @layer utilities {
-  .glass {
-    background-color: hsl(var(--glass-bg) / 0.45);
-    backdrop-filter: blur(20px) saturate(140%);
-    -webkit-backdrop-filter: blur(20px) saturate(140%);
-    border: 1px solid hsl(0 0% 100% / 0.08);
+  .rangoli-turn {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: rangoli-turn 110s linear infinite;
   }
-
-  .glass-strong {
-    background-color: hsl(var(--background) / 0.65);
-    backdrop-filter: blur(24px) saturate(140%);
-    -webkit-backdrop-filter: blur(24px) saturate(140%);
-    border: 1px solid hsl(0 0% 100% / 0.08);
+  .rangoli-turn-reverse {
+    animation-duration: 70s;
+    animation-direction: reverse;
   }
-
-  .glow-border {
-    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.25), 0 12px 40px -8px hsl(var(--primary) / 0.15);
+  .scrollbar-hide {
+    scrollbar-width: none;
   }
-
-  .glow-border-hover {
-    transition: box-shadow 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
-  }
-  .glow-border-hover:hover {
-    box-shadow: 0 0 0 1px hsl(var(--primary) / 0.45), 0 20px 60px -10px hsl(var(--primary) / 0.35);
-    transform: translateY(-4px);
-  }
-
-  .text-glow {
-    text-shadow: 0 0 40px hsl(var(--primary) / 0.45);
-  }
-
-  .glow-border-cool {
-    box-shadow: 0 0 0 1px hsl(var(--secondary) / 0.3), 0 12px 40px -8px hsl(var(--secondary) / 0.2);
-  }
-
-  .glow-border-cool-hover {
-    transition: box-shadow 0.35s ease, transform 0.35s ease;
-  }
-  .glow-border-cool-hover:hover {
-    box-shadow: 0 0 0 1px hsl(var(--secondary) / 0.5), 0 20px 60px -10px hsl(var(--secondary) / 0.4);
-    transform: translateY(-4px);
-  }
-
-  .text-glow-cool {
-    text-shadow: 0 0 40px hsl(var(--secondary) / 0.45);
-  }
-
-  .bg-grid {
-    background-image:
-      linear-gradient(hsl(var(--foreground) / 0.06) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--foreground) / 0.06) 1px, transparent 1px);
-    background-size: 48px 48px;
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }
 
-@keyframes float {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(16px, -24px); }
-}
-@keyframes float-reverse {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(-20px, 20px); }
-}
-@keyframes glow-pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-float {
-  animation: float 9s ease-in-out infinite;
-}
-.animate-float-reverse {
-  animation: float-reverse 11s ease-in-out infinite;
-}
-.animate-glow-pulse {
-  animation: glow-pulse 3.5s ease-in-out infinite;
-}
-.animate-fade-up {
-  animation: fade-up 0.7s ease-out both;
-}
-
-/* Respect user motion preferences everywhere, including GSAP-driven inline styles */
+/* Honour reduced-motion for CSS transitions as well as Motion (which reads the same setting). */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rangoli-turn {
+    animation: none;
+  }
   *,
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
   }
 }

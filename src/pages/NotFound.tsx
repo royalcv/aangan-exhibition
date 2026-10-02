@@ -1,36 +1,26 @@
 import { useLocation, Link } from "react-router-dom";
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Seo from "@/components/Seo";
 
 const NotFound = () => {
   const location = useLocation();
 
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="page-wrap flex min-h-[60vh] flex-col items-start justify-center py-20">
       <Seo
         title="Page Not Found | Aangan Exhibition"
         description="The page you're looking for doesn't exist or has been moved."
         path={location.pathname}
         noindex
       />
-      <div className="text-center max-w-md mx-auto px-4">
-        <h1 className="text-6xl font-bold mb-4 bg-gradient-accent bg-clip-text text-transparent">404</h1>
-        <h2 className="text-2xl font-semibold mb-4 text-foreground">Page Not Found</h2>
-        <p className="text-muted-foreground mb-8">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <Button asChild variant="hero">
-          <Link to="/">Return to Home</Link>
-        </Button>
-      </div>
+      <p className="font-display text-7xl text-madder md:text-9xl">404</p>
+      <h1 className="mt-2 text-3xl md:text-4xl">We can't find that page</h1>
+      <p className="mt-4 max-w-md text-lg text-muted-foreground">
+        The link may be old, or the page has moved. Head back home to find the next exhibition.
+      </p>
+      <Button asChild className="mt-8">
+        <Link to="/">Back to home</Link>
+      </Button>
     </div>
   );
 };

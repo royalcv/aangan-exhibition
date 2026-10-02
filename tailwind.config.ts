@@ -18,7 +18,13 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				display: ['"Yatra One"', '"Mukta"', 'serif'],
+				sans: ['"Mukta"', 'system-ui', 'sans-serif']
+			},
 			colors: {
+				ink: 'hsl(var(--ink))',
+				madder: 'hsl(var(--madder))',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -61,27 +67,7 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				},
-				exhibition: {
-					gold: 'hsl(var(--exhibition-gold))',
-					bronze: 'hsl(var(--exhibition-bronze))',
-					dark: 'hsl(var(--exhibition-dark))',
-					warm: 'hsl(var(--exhibition-warm))',
-					teal: 'hsl(var(--exhibition-teal))',
-					indigo: 'hsl(var(--exhibition-indigo))'
 				}
-			},
-			backgroundImage: {
-				'gradient-hero': 'var(--gradient-hero)',
-				'gradient-card': 'var(--gradient-card)',
-				'gradient-accent': 'var(--gradient-accent)',
-				'gradient-cool': 'var(--gradient-cool)'
-			},
-			boxShadow: {
-				'warm': 'var(--shadow-warm)',
-				'deep': 'var(--shadow-deep)',
-				'glow': 'var(--shadow-glow)',
-				'glow-cool': 'var(--shadow-glow-cool)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
