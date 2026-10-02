@@ -4,6 +4,7 @@ import { MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Seo from '@/components/Seo';
 import Reviews from '@/components/Reviews';
+import GoogleReviewCta from '@/components/GoogleReviewCta';
 import { GalleryPreview } from '@/features/gallery';
 import Rangoli from '@/design/Rangoli';
 import { duration, ease } from '@/design/motion';
@@ -234,6 +235,7 @@ const Home = () => {
 
       <GalleryPreview />
       <Reviews />
+      <GoogleReviewCta />
 
       {/* Stall CTA */}
       <section className="bg-primary text-primary-foreground">

@@ -6,6 +6,7 @@ export const site = {
   email: 'aanganexhibition@gmail.com',
   address: 'Lig 64, 8/2, Near SSC Board Office, Tope Nagar, Amravati 444602',
   whatsapp: 'https://wa.me/919270135692',
+  googleReview: 'https://g.page/r/CdZGBoAuITU7EAE/review',
   facebook: 'https://www.facebook.com/share/1CN89HaZ7V/?mibextid=wwXIfr',
   instagram: 'https://www.instagram.com/aangan_exhibition?igsh=YnQzN2w4cTE4MHZu&utm_source=qr',
 } as const;

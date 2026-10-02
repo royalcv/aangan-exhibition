@@ -1,4 +1,5 @@
 import Seo from '@/components/Seo';
+import GoogleReviewCta from '@/components/GoogleReviewCta';
 import { organizationSchema, breadcrumbSchema } from '@/lib/structuredData';
 
 const organizers = [
@@ -128,6 +129,8 @@ const About = () => (
         ))}
       </ul>
     </section>
+
+    <GoogleReviewCta />
   </>
 );
 

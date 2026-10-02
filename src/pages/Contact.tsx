@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { submitToGoogleForm } from '@/lib/googleForm';
 import { site } from '@/data/site';
 import Seo from '@/components/Seo';
+import GoogleReviewCta from '@/components/GoogleReviewCta';
 import { organizationSchema, breadcrumbSchema } from '@/lib/structuredData';
 
 const emptyForm = { name: '', email: '', phone: '', subject: '', message: '' };
@@ -180,6 +181,8 @@ const Contact = () => {
           </ul>
         </section>
       </div>
+
+      <GoogleReviewCta />
     </>
   );
 };
