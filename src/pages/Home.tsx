@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { m, type Variants } from 'motion/react';
-import { MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Seo from '@/components/Seo';
+import WhatsAppButton from '@/components/WhatsAppButton';
 import Reviews from '@/components/Reviews';
 import GoogleReviewCta from '@/components/GoogleReviewCta';
 import { GalleryPreview, UpcomingPreview } from '@/features/gallery';
@@ -100,12 +100,7 @@ const Home = () => {
                       Get directions
                     </a>
                   </Button>
-                  <Button asChild variant="light">
-                    <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">
-                      <MessageCircle aria-hidden="true" />
-                      WhatsApp us
-                    </a>
-                  </Button>
+                  <WhatsAppButton />
                 </div>
                 <a
                   href="#editions"
@@ -118,12 +113,7 @@ const Home = () => {
               <>
                 <p className="font-display text-3xl text-primary">Dates announced soon</p>
                 <p className="mt-3 text-white/90">Follow us on Instagram or message us to hear about the next edition first.</p>
-                <Button asChild className="mt-6">
-                  <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">
-                    <MessageCircle aria-hidden="true" />
-                    WhatsApp us
-                  </a>
-                </Button>
+                <WhatsAppButton className="mt-6" />
               </>
             )}
           </m.div>
@@ -249,12 +239,7 @@ const Home = () => {
             <Button asChild variant="ink">
               <Link to="/contact">Contact us</Link>
             </Button>
-            <Button asChild variant="outline" className="border-ink text-ink hover:bg-ink hover:text-white">
-              <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">
-                <MessageCircle aria-hidden="true" />
-                WhatsApp us
-              </a>
-            </Button>
+            <WhatsAppButton />
           </div>
         </div>
       </section>

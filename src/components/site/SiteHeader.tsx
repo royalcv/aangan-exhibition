@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Facebook, Instagram, Menu, MessageCircle } from 'lucide-react';
+import { Facebook, Instagram, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import WhatsAppButton from '@/components/WhatsAppButton';
 import aanganLogo from '@/assets/aangan-logo.webp';
 import { site } from '@/data/site';
 import { cn } from '@/lib/utils';
@@ -45,12 +46,7 @@ const SiteHeader = () => {
               {item.name}
             </NavLink>
           ))}
-          <Button asChild size="sm">
-            <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">
-              <MessageCircle aria-hidden="true" />
-              WhatsApp us
-            </a>
-          </Button>
+          <WhatsAppButton size="sm" />
         </nav>
 
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
@@ -81,12 +77,7 @@ const SiteHeader = () => {
               ))}
             </nav>
             <div className="mt-8 flex items-center gap-3">
-              <Button asChild>
-                <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">
-                  <MessageCircle aria-hidden="true" />
-                  WhatsApp us
-                </a>
-              </Button>
+              <WhatsAppButton />
               {socials.map(({ href, icon: Icon, label }) => (
                 <Button key={label} asChild variant="outline" size="icon">
                   <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>

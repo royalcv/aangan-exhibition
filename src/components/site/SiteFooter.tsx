@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
+import { Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react';
+import WhatsAppButton from '@/components/WhatsAppButton';
 import aanganLogo from '@/assets/aangan-logo.webp';
 import { editions, getNextEdition } from '@/data/editions';
 import { site } from '@/data/site';
@@ -98,9 +99,7 @@ const SiteFooter = () => {
             <a href={site.instagram} target="_blank" rel="noopener noreferrer" aria-label="Aangan on Instagram" className={iconLink}>
               <Instagram className="h-5 w-5" aria-hidden="true" />
             </a>
-            <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="Message Aangan on WhatsApp" className={iconLink}>
-              <MessageCircle className="h-5 w-5" aria-hidden="true" />
-            </a>
+            <WhatsAppButton iconOnly />
           </div>
         </div>
       </div>
