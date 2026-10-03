@@ -75,7 +75,7 @@ const Home = () => {
               <span lang="mr" className="block font-display text-7xl leading-[1.15] text-primary md:text-9xl">
                 आंगण
               </span>
-              <span className="mt-2 block font-display text-3xl text-white md:text-5xl">The Grand Diwali Exhibition</span>
+              <span className="mt-2 block font-display text-3xl text-white md:text-5xl">The Grand Exhibition</span>
             </m.h1>
             <m.p variants={heroItem} className="mt-6 max-w-xl text-lg text-white/90 md:text-xl">
               Amravati's meeting place for women entrepreneurs, artisans and homegrown brands. Five editions and
