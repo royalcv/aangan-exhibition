@@ -60,9 +60,12 @@ export const editions: Edition[] = [
   },
 ];
 
+/** True once the edition's last day is over. */
+export const hasEnded = (edition: Edition, now: Date = new Date()): boolean => new Date(edition.endDate) <= now;
+
 /** Editions that haven't finished yet, in date order. */
 export const getUpcomingEditions = (now: Date = new Date()): Edition[] =>
-  editions.filter((edition) => new Date(edition.endDate) > now);
+  editions.filter((edition) => !hasEnded(edition, now));
 
 /** The first edition that hasn't finished yet, or null once all have passed. */
 export const getNextEdition = (now: Date = new Date()): Edition | null => getUpcomingEditions(now)[0] ?? null;

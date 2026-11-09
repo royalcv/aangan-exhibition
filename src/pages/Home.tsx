@@ -8,7 +8,7 @@ import GoogleReviewCta from '@/components/GoogleReviewCta';
 import { GalleryPreview, UpcomingPreview } from '@/features/gallery';
 import Rangoli from '@/design/Rangoli';
 import { duration, ease } from '@/design/motion';
-import { editions, getNextEdition } from '@/data/editions';
+import { editions, getNextEdition, hasEnded } from '@/data/editions';
 import { site, stats } from '@/data/site';
 import { useNow } from '@/lib/useNow';
 import heroImage from '@/assets/backGi3.webp';
@@ -30,7 +30,8 @@ const shopItems = unique(editions.map((edition) => edition.shop));
 const experienceItems = unique(editions.map((edition) => edition.experience));
 
 const Home = () => {
-  const next = getNextEdition(useNow());
+  const now = useNow();
+  const next = getNextEdition(now);
 
   return (
     <>
@@ -191,7 +192,7 @@ const Home = () => {
       {/* Editions */}
       <section id="editions" className="page-wrap scroll-mt-24 pb-16 pt-10 md:pb-24 md:pt-14" aria-labelledby="editions-heading">
         <h2 id="editions-heading" className="max-w-2xl text-3xl md:text-5xl">
-          The 2026 Diwali editions
+          {next ? 'The 2026 Diwali editions' : 'Diwali 2026: thank you, Amravati'}
         </h2>
         <div className="mt-10">
           {editions.map((edition) => (
@@ -215,13 +216,19 @@ const Home = () => {
                   <span className="font-semibold">Also: </span>
                   {edition.experience.join(', ')}.
                 </p>
-                <p className="mt-4 text-muted-foreground">{edition.expected}</p>
-                <Button asChild variant="outline" className="mt-6">
-                  <a href={edition.directions} target="_blank" rel="noopener noreferrer">
-                    Get directions
-                    <span className="sr-only"> to {edition.venue}</span>
-                  </a>
-                </Button>
+                {hasEnded(edition, now) ? (
+                  <p className="mt-4 text-muted-foreground">This edition has ended.</p>
+                ) : (
+                  <>
+                    <p className="mt-4 text-muted-foreground">{edition.expected}</p>
+                    <Button asChild variant="outline" className="mt-6">
+                      <a href={edition.directions} target="_blank" rel="noopener noreferrer">
+                        Get directions
+                        <span className="sr-only"> to {edition.venue}</span>
+                      </a>
+                    </Button>
+                  </>
+                )}
               </div>
             </article>
           ))}
