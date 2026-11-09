@@ -35,16 +35,16 @@ const members = [
 // A real sequence, so this is the one place on the site where ordered markers belong.
 const journey = [
   { year: '2024', milestone: 'Aangan Exhibition was born.' },
-  { year: '5+', milestone: 'Successful editions, connecting thousands of visitors with local businesses.' },
-  { year: '500+', milestone: 'Brands and exhibitors.' },
-  { year: '2026', milestone: 'Celebrated 90,000+ annual visitors.' },
+  { year: '8+', milestone: 'Successful editions, connecting thousands of visitors with local businesses.' },
+  { year: '800+', milestone: 'Brands and exhibitors.' },
+  { year: '2026', milestone: 'Celebrated 1,50,000+ visitors.' },
 ];
 
 const About = () => (
   <>
     <Seo
       title="About Us | Aangan Exhibition - Amravati's Premier Cultural Exhibition"
-      description="Aangan Exhibition empowers women entrepreneurs and celebrates Amravati & Vidarbha's culture. Meet the team behind the best exhibition in Amravati, with 5+ editions and 90,000+ visitors."
+      description="Aangan Exhibition empowers women entrepreneurs and celebrates Amravati & Vidarbha's culture. Meet the team behind the best exhibition in Amravati, with 8+ editions and 1,50,000+ visitors."
       path="/about"
       keywords="Aangan Exhibition Amravati, best exhibition in Amravati, exhibition organizers Amravati, women entrepreneurs Vidarbha, cultural exhibition history Amravati"
       structuredData={[

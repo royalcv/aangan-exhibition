@@ -11,10 +11,12 @@ export const site = {
   instagram: 'https://www.instagram.com/aangan_exhibition?igsh=YnQzN2w4cTE4MHZu&utm_source=qr',
 } as const;
 
+/** Aangan in numbers, shown in the band under the home hero. Update the figures here. */
 export const stats = [
-  { value: '5+', label: 'editions' },
-  { value: '90,000+', label: 'visitors' },
-  { value: '500+', label: 'brands and exhibitors' },
+  { value: 'Since 2024', label: 'in Amravati' },
+  { value: '8+', label: 'editions' },
+  { value: '1,50,000+', label: 'visitors' },
+  { value: '800+', label: 'brands and exhibitors' },
 ] as const;
 
 export const mapsLink = (query: string) =>

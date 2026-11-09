@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 // Home is the usual landing page, so it ships in the main bundle; the other pages are code-split.
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
+const Stalls = lazy(() => import("./pages/Stalls"));
 const GalleryPage = lazy(() => import("./features/gallery").then((module) => ({ default: module.GalleryPage })));
 
 /** After the outgoing page has faded, reset scroll and move focus to <main> for keyboard and screen-reader users. */
@@ -41,6 +42,7 @@ const AnimatedRoutes: React.FC = () => {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/videos" element={<GalleryPage />} />
+            <Route path="/stalls" element={<Stalls />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

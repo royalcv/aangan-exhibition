@@ -88,6 +88,9 @@ const SiteFooter = () => {
             <Link to="/videos" className="inline-flex min-h-11 items-center hover:text-primary">
               Videos
             </Link>
+            <Link to="/stalls" className="inline-flex min-h-11 items-center hover:text-primary">
+              Stalls
+            </Link>
             <Link to="/contact" className="inline-flex min-h-11 items-center hover:text-primary">
               Contact
             </Link>

@@ -1,16 +1,17 @@
 import VideoCard from './VideoCard';
-import { upcomingVideos } from './videos';
+import { teaserEditionIds, upcomingVideos } from './videos';
 import backdrop from '@/assets/backGi3.webp';
-import { getNextEdition } from '@/data/editions';
+import { editions, hasEnded } from '@/data/editions';
 import { useNow } from '@/lib/useNow';
 
 /**
  * Teasers for the upcoming editions, on frosted glass over the lamp-lit photo.
- * Once every edition has ended, the same videos are labelled as this season's promos instead.
+ * Once the editions they promote (teaserEditionIds) have ended, the same videos are labelled as this season's promos instead.
  * Nothing autoplays: each video loads and plays only when the visitor presses play.
  */
 const UpcomingPreview = () => {
-  const isUpcoming = getNextEdition(useNow()) !== null;
+  const now = useNow();
+  const isUpcoming = editions.some((edition) => teaserEditionIds.includes(edition.id) && !hasEnded(edition, now));
 
   return (
     <section className="ink-band on-ink relative isolate overflow-hidden" aria-labelledby="upcoming-heading">

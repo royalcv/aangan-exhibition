@@ -1,22 +1,16 @@
 import { useEffect, useRef, type ReactNode } from 'react';
-import { CalendarDays, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { CalendarDays, LayoutGrid, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { WhatsAppIcon } from '@/components/WhatsAppButton';
 import { mapsLink, site } from '@/data/site';
+import { sankrantiEdition } from '@/data/sankranti';
 
 /* ────────────────────────────────────────────────────────────────────────────
- * 1. EVENT DETAILS: edit the text shown in the hero here.
+ * 1. EVENT DETAILS: edit the dates and venue in src/data/sankranti.ts (the stall
+ *    availability page reads the same values).
  * ──────────────────────────────────────────────────────────────────────────── */
-const EVENT = {
-  title: 'AANGAN EXHIBITION',
-  edition: 'Makar Sankranti Special Edition',
-  dates: '9th & 10th January 2027',
-  /** Machine-readable first day, used by <time> for search engines and assistive tech. */
-  startDate: '2027-01-09',
-  venue: 'Abhiyanta Bhavan, Shegaon Naka, Amravati',
-  /** What Google Maps searches for when "Get Directions" is pressed. */
-  mapsQuery: 'Abhiyanta Bhavan, Shegaon Naka, Amravati',
-} as const;
+const EVENT = sankrantiEdition;
 
 /* ────────────────────────────────────────────────────────────────────────────
  * 2. COLOURS: edit the palette here. Everything in the scene reads these tokens.
@@ -455,12 +449,18 @@ const SankrantiHero = () => {
             </li>
           </ul>
 
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Button asChild size="lg">
               <a href={mapsLink(EVENT.mapsQuery)} target="_blank" rel="noopener noreferrer">
                 Get Directions
                 <span className="sr-only"> to {EVENT.venue} (opens Google Maps in a new tab)</span>
               </a>
+            </Button>
+            <Button asChild size="lg" variant="light">
+              <Link to="/stalls">
+                <LayoutGrid />
+                Check Stall Availability
+              </Link>
             </Button>
             <Button asChild size="lg" variant="light">
               <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">

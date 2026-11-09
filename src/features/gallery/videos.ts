@@ -45,6 +45,13 @@ export const pastVideos: GalleryVideo[] = Array.from({ length: 23 }, (_, i) => (
  * To change them, just replace src/assets/1.mp4 to 4.mp4 (keep the file names). There are no
  * separate cover images: each card shows its own video's first frame.
  */
+/**
+ * The editions those four teasers promote. While any of them is still to come the section says
+ * "Upcoming"; once they're over it labels the videos as that season's promos. Update this list
+ * when you swap in teasers for a new edition.
+ */
+export const teaserEditionIds = ['rajapeth', 'camp-road'];
+
 export const upcomingVideos: GalleryVideo[] = Array.from({ length: 4 }, (_, i) => ({
   src: byNumber(1 + i),
   title: `Upcoming edition preview ${i + 1}`,
