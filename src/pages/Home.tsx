@@ -84,7 +84,7 @@ const Home = () => {
               <span className="mt-2 block font-display text-3xl text-white md:text-5xl">The Grand Exhibition</span>
             </m.h1>
             <m.p variants={heroItem} className="mt-6 max-w-xl text-lg text-white/90 md:text-xl">
-              Amravati's meeting place for women entrepreneurs, artisans and homegrown brands. Five editions and
+              Amravati’s meeting place for women entrepreneurs, artisans and homegrown brands. Five editions and
               90,000+ visitors so far.
             </m.p>
           </div>
@@ -175,7 +175,7 @@ const Home = () => {
           <h2 className="text-3xl text-primary md:text-5xl">Empowering women, enriching communities</h2>
           <div className="space-y-5 text-lg text-white/90">
             <p>
-              Aangan is more than an event; it's a movement. We give women entrepreneurs, artisans and innovators a
+              Aangan is more than an event; it’s a movement. We give women entrepreneurs, artisans and innovators a
               stage where passion becomes recognition: unique crafts, homegrown businesses and stories of resilience.
             </p>
             <p>

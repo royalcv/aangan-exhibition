@@ -22,7 +22,7 @@ const SiteFooter = () => {
             <p className="font-display text-3xl text-primary">आंगण</p>
           </div>
           <p className="mt-4 max-w-xs text-white/80">
-            A stage for Amravati's women entrepreneurs, artisans and homegrown brands.
+            A stage for Amravati’s women entrepreneurs, artisans and homegrown brands.
           </p>
           <p className="mt-3 text-sm text-white/60">{site.registration}</p>
         </div>

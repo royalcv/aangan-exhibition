@@ -97,7 +97,7 @@ const Contact = () => {
         <div className="page-wrap py-16 md:py-24">
           <h1 className="max-w-3xl text-4xl text-primary md:text-6xl">Contact us</h1>
           <p className="mt-5 max-w-2xl text-lg text-white/85 md:text-xl">
-            Questions about exhibiting, sponsoring or visiting? Write to us and we'll reply within 24 hours.
+            Questions about exhibiting, sponsoring or visiting? Write to us and we’ll reply within 24 hours.
           </p>
         </div>
         <div className="dot-rule" aria-hidden="true" />

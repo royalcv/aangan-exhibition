@@ -70,7 +70,7 @@ const About = () => (
       <div>
         <h2 className="text-3xl text-madder">Our mission</h2>
         <p className="mt-4 text-lg">
-          To preserve, promote, and celebrate Amravati's rich cultural heritage through exhibitions that educate,
+          To preserve, promote, and celebrate Amravati’s rich cultural heritage through exhibitions that educate,
           inspire, and connect communities across generations. We create platforms where traditional artisans can
           showcase their skills and visitors can experience authentic culture.
         </p>
