@@ -14,7 +14,7 @@ const GalleryPreview = () => (
     <ul className="mt-8 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3">
       {pastVideos.slice(0, 6).map((video) => (
         <li key={video.src}>
-          <VideoCard src={video.src} poster={video.poster} title={video.title} />
+          <VideoCard src={video.src} poster={video.poster} posterSrcSet={video.posterSrcSet} title={video.title} />
         </li>
       ))}
     </ul>

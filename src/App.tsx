@@ -1,25 +1,18 @@
 import React, { Suspense, lazy } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, m } from "motion/react";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
 import Loader from "./components/ui/loder";
 import SiteLayout from "./components/site/SiteLayout";
 import MotionProvider from "./design/MotionProvider";
 import { pageTransition } from "./design/motion";
 import Home from "./pages/Home";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
-// The gallery is a self-contained feature, so it's code-split from the shell.
+// Home is the usual landing page, so it ships in the main bundle; the other pages are code-split.
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
 const GalleryPage = lazy(() => import("./features/gallery").then((module) => ({ default: module.GalleryPage })));
-
-const queryClient = new QueryClient();
 
 /** After the outgoing page has faded, reset scroll and move focus to <main> for keyboard and screen-reader users. */
 const resetForNewPage = () => {
@@ -56,25 +49,16 @@ const AnimatedRoutes: React.FC = () => {
   );
 };
 
-const App: React.FC = () => {
-  return (
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <MotionProvider>
-            <Toaster />
-            <Sonner />
-
-            <BrowserRouter>
-              <SiteLayout>
-                <AnimatedRoutes />
-              </SiteLayout>
-            </BrowserRouter>
-          </MotionProvider>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </HelmetProvider>
-  );
-};
+/**
+ * The whole site, without a router or head provider: src/main.tsx wraps it for the browser and
+ * src/entry-server.tsx wraps it for build-time pre-rendering.
+ */
+const App: React.FC = () => (
+  <MotionProvider>
+    <SiteLayout>
+      <AnimatedRoutes />
+    </SiteLayout>
+  </MotionProvider>
+);
 
 export default App;

@@ -1,47 +1,79 @@
-import { useState } from 'react';
-import { Clock, Mail, MapPin, Phone, Send } from 'lucide-react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CheckCircle2, Clock, Mail, MapPin, Phone, Send, TriangleAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
-import { submitToGoogleForm } from '@/lib/googleForm';
+import WhatsAppButton from '@/components/WhatsAppButton';
+import { contactSchema, type ContactFormData } from '@/lib/contactSchema';
 import { site } from '@/data/site';
 import Seo from '@/components/Seo';
 import GoogleReviewCta from '@/components/GoogleReviewCta';
 import { organizationSchema, breadcrumbSchema } from '@/lib/structuredData';
 
-const emptyForm = { name: '', email: '', phone: '', subject: '', message: '' };
+const emptyForm: ContactFormData = { name: '', email: '', phone: '', subject: '', message: '', company: '' };
+
+type Status = 'idle' | 'sent' | 'failed';
+
+type FieldProps = {
+  id: keyof ContactFormData;
+  label: ReactNode;
+  error?: string;
+  children: (describedBy: string | undefined) => ReactNode;
+};
+
+/** Label, control and an error line wired together with aria-describedby. */
+const Field = ({ id, label, error, children }: FieldProps) => {
+  const errorId = `${id}-error`;
+  return (
+    <div className="space-y-2">
+      <Label htmlFor={id}>{label}</Label>
+      {children(error ? errorId : undefined)}
+      {error ? (
+        <p id={errorId} className="text-sm font-medium text-destructive">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+};
+
+const inputClass = (invalid: boolean) => (invalid ? 'h-12 border-destructive text-base' : 'h-12 text-base');
 
 const Contact = () => {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState(emptyForm);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<Status>('idle');
+  const statusRef = useRef<HTMLDivElement>(null);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: emptyForm,
+    mode: 'onTouched',
+  });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  // Move focus to the result so keyboard and screen-reader users hear it straight away.
+  useEffect(() => {
+    if (status !== 'idle') statusRef.current?.focus();
+  }, [status]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
+  const onSubmit = async (data: ContactFormData) => {
+    setStatus('idle');
     try {
-      await submitToGoogleForm(formData);
-      toast({
-        title: 'Message sent',
-        description: "Thank you for contacting us. We'll get back to you within 24 hours.",
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
       });
-      setFormData(emptyForm);
+      if (!response.ok) throw new Error(`Contact endpoint responded ${response.status}`);
+      reset(emptyForm);
+      setStatus('sent');
     } catch {
-      toast({
-        title: "Couldn't send your message",
-        description: 'Check your connection and try again, or reach us directly on WhatsApp.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsSubmitting(false);
+      setStatus('failed');
     }
   };
 
@@ -76,34 +108,83 @@ const Contact = () => {
           <h2 id="form-heading" className="text-3xl">
             Send us a message
           </h2>
-          <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+          <div ref={statusRef} tabIndex={-1} role="status" aria-live="polite" className="outline-none">
+            {status === 'sent' ? (
+              <div className="mt-8 flex gap-3 rounded-md border border-border bg-muted p-5">
+                <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-madder" aria-hidden="true" />
+                <div>
+                  <p className="font-semibold">Message sent</p>
+                  <p className="text-muted-foreground">Thank you for contacting us. We'll get back to you within 24 hours.</p>
+                </div>
+              </div>
+            ) : null}
+            {status === 'failed' ? (
+              <div className="mt-8 flex gap-3 rounded-md border border-destructive p-5">
+                <TriangleAlert className="mt-0.5 h-6 w-6 shrink-0 text-destructive" aria-hidden="true" />
+                <div>
+                  <p className="font-semibold">Your message didn't go through</p>
+                  <p className="text-muted-foreground">
+                    Nothing you typed has been lost. Try again in a moment, or reach us directly on WhatsApp.
+                  </p>
+                  <WhatsAppButton size="sm" className="mt-4" />
+                </div>
+              </div>
+            ) : null}
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} noValidate className="relative mt-8 space-y-6">
             <div className="grid gap-6 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full name</Label>
-                <Input id="name" name="name" type="text" required autoComplete="name" value={formData.name} onChange={handleInputChange} className="h-12 text-base" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email address</Label>
-                <Input id="email" name="email" type="email" required autoComplete="email" value={formData.email} onChange={handleInputChange} className="h-12 text-base" />
-              </div>
+              <Field id="name" label="Full name" error={errors.name?.message}>
+                {(describedBy) => (
+                  <Input id="name" type="text" autoComplete="name" maxLength={100} aria-invalid={!!errors.name} aria-describedby={describedBy} className={inputClass(!!errors.name)} {...register('name')} />
+                )}
+              </Field>
+              <Field id="email" label="Email address" error={errors.email?.message}>
+                {(describedBy) => (
+                  <Input id="email" type="email" autoComplete="email" maxLength={254} aria-invalid={!!errors.email} aria-describedby={describedBy} className={inputClass(!!errors.email)} {...register('email')} />
+                )}
+              </Field>
             </div>
 
             <div className="grid gap-6 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="phone">
-                  Phone number <span className="font-normal text-muted-foreground">(optional)</span>
-                </Label>
-                <Input id="phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" value={formData.phone} onChange={handleInputChange} className="h-12 text-base" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="subject">Subject</Label>
-                <Input id="subject" name="subject" type="text" required value={formData.subject} onChange={handleInputChange} className="h-12 text-base" />
-              </div>
+              <Field
+                id="phone"
+                label={
+                  <>
+                    Phone number <span className="font-normal text-muted-foreground">(optional)</span>
+                  </>
+                }
+                error={errors.phone?.message}
+              >
+                {(describedBy) => (
+                  <Input id="phone" type="tel" inputMode="tel" autoComplete="tel" maxLength={20} aria-invalid={!!errors.phone} aria-describedby={describedBy} className={inputClass(!!errors.phone)} {...register('phone')} />
+                )}
+              </Field>
+              <Field id="subject" label="Subject" error={errors.subject?.message}>
+                {(describedBy) => (
+                  <Input id="subject" type="text" maxLength={150} aria-invalid={!!errors.subject} aria-describedby={describedBy} className={inputClass(!!errors.subject)} {...register('subject')} />
+                )}
+              </Field>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="message">Message</Label>
-              <Textarea id="message" name="message" required rows={6} value={formData.message} onChange={handleInputChange} className="resize-y text-base" />
+            <Field id="message" label="Message" error={errors.message?.message}>
+              {(describedBy) => (
+                <Textarea
+                  id="message"
+                  rows={6}
+                  maxLength={3000}
+                  aria-invalid={!!errors.message}
+                  aria-describedby={describedBy}
+                  className={errors.message ? 'resize-y border-destructive text-base' : 'resize-y text-base'}
+                  {...register('message')}
+                />
+              )}
+            </Field>
+
+            {/* Honeypot: off-screen and hidden from keyboard and screen readers, so only bots fill it in. */}
+            <div aria-hidden="true" className="absolute -left-[9999px] top-0 h-px w-px overflow-hidden">
+              <label htmlFor="company">Company</label>
+              <input id="company" type="text" tabIndex={-1} autoComplete="off" {...register('company')} />
             </div>
 
             <Button type="submit" size="lg" disabled={isSubmitting} aria-busy={isSubmitting}>

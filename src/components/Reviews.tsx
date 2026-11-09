@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { duration, ease } from '@/design/motion';
 import backdrop from '@/assets/backGi3.webp';
+import backdropSrcSet from '@/assets/backGi3.webp?w=640;1024;1440;1920&format=webp&as=srcset';
 import { cn } from '@/lib/utils';
 
 type Testimonial = { name: string; context: string; rating: number; text: string };
@@ -189,6 +190,8 @@ const Reviews = () => {
     <section className="ink-band on-ink relative isolate overflow-hidden" aria-labelledby="reviews-heading">
       <img
         src={backdrop}
+        srcSet={backdropSrcSet}
+        sizes="100vw"
         alt=""
         loading="lazy"
         decoding="async"

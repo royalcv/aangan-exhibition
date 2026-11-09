@@ -45,7 +45,7 @@ const GalleryPage = () => {
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
           {visible.map((video) => (
             <li key={video.src}>
-              <VideoCard src={video.src} poster={video.poster} title={video.title} />
+              <VideoCard src={video.src} poster={video.poster} posterSrcSet={video.posterSrcSet} title={video.title} />
             </li>
           ))}
         </ul>

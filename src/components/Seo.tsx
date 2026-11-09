@@ -34,6 +34,9 @@ const Seo = ({ title, description, path, keywords, image = DEFAULT_IMAGE, noinde
       <meta property="og:image" content={image} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content="Aangan Exhibition - a celebration of culture, crafts, and women entrepreneurs" />
+      <meta property="og:site_name" content="Aangan Exhibition" />
+      <meta property="og:locale" content="en_IN" />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />

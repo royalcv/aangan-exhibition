@@ -11,6 +11,8 @@ type VideoCardProps = {
    * cover can never go out of sync with the video.
    */
   poster?: string;
+  /** Responsive versions of `poster` for the lazy cover image. */
+  posterSrcSet?: string;
   title: string;
   aspectRatio?: 'square' | 'wide';
   /** Small frosted tag over the poster, e.g. "Upcoming". */
@@ -24,13 +26,15 @@ const ACTIVE_VIDEO_EVENT = 'aangan:active-video';
 
 /**
  * A video card that never autoplays and plays one video at a time.
- * - With a `poster`, it loads the video only when played and releases it again once it scrolls
- *   away, which keeps a 23-video page light on phones.
- * - Without one, it loads just the video's metadata and shows its first frame as the cover.
+ * - With a `poster`, the cover is a lazy-loaded <img> (a <video poster> always downloads at once,
+ *   even far below the fold). The video loads only when played and is released again once it
+ *   scrolls away, which keeps a 23-video page light on phones.
+ * - Without one, it waits until the card is near the screen, then loads just the video's metadata
+ *   and shows its first frame as the cover.
  */
-const VideoCard = ({ src, poster, title, aspectRatio = 'square', label, tone = 'solid', className }: VideoCardProps) => {
+const VideoCard = ({ src, poster, posterSrcSet, title, aspectRatio = 'square', label, tone = 'solid', className }: VideoCardProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [hasSource, setHasSource] = useState(!poster);
+  const [hasSource, setHasSource] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
@@ -52,14 +56,17 @@ const VideoCard = ({ src, poster, title, aspectRatio = 'square', label, tone = '
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) {
+        if (entry.isIntersecting) {
+          // First-frame covers need the file, so attach it once the card is close.
+          if (!poster) setHasSource(true);
+        } else {
           video.pause();
           setIsPlaying(false);
           // Only release the file when a separate poster is covering for it.
           if (poster) setHasSource(false);
         }
       },
-      { rootMargin: '100px 0px' },
+      { rootMargin: '200px 0px' },
     );
 
     observer.observe(video);
@@ -100,11 +107,25 @@ const VideoCard = ({ src, poster, title, aspectRatio = 'square', label, tone = '
         </span>
       ) : null}
 
+      {poster && !hasSource ? (
+        <img
+          src={poster}
+          srcSet={posterSrcSet}
+          // Cards are half the screen on phones and a third to a quarter on wider screens.
+          sizes="(min-width: 640px) 33vw, 50vw"
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      ) : null}
+
       <video
         ref={videoRef}
         // "#t=0.1" makes browsers (including iOS Safari) paint a frame instead of a black box.
         src={hasSource ? (poster ? src : `${src}#t=0.1`) : undefined}
-        poster={poster}
+        // The <img> above covers for it until then; by now the poster is cached, so there's no flash.
+        poster={hasSource ? poster : undefined}
         muted
         playsInline
         preload={poster ? 'none' : 'metadata'}

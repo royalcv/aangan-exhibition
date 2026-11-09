@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Lint, type check, build and Lighthouse
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint (includes jsx-a11y accessibility rules)
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Build and pre-render
+        run: npm run build
+
+      - name: Check every route was pre-rendered
+        run: |
+          for page in index.html about/index.html contact/index.html videos/index.html 404.html; do
+            grep -q '<title' "dist/$page" || { echo "dist/$page is missing or has no <title>"; exit 1; }
+          done
+
+      - name: Dependency audit (production, high and critical)
+        run: npm audit --omit=dev --audit-level=high
+
+      # Budgets live in lighthouserc.json: accessibility and SEO >= 95, performance >= 80,
+      # LCP <= 4 s, CLS <= 0.1, TBT <= 300 ms, JavaScript <= 200 KB transferred.
+      - name: Lighthouse CI
+        run: npx --yes @lhci/cli@0.15 autorun
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/reports
+          if-no-files-found: ignore
+          retention-days: 14

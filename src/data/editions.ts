@@ -60,6 +60,9 @@ export const editions: Edition[] = [
   },
 ];
 
+/** Editions that haven't finished yet, in date order. */
+export const getUpcomingEditions = (now: Date = new Date()): Edition[] =>
+  editions.filter((edition) => new Date(edition.endDate) > now);
+
 /** The first edition that hasn't finished yet, or null once all have passed. */
-export const getNextEdition = (now: Date = new Date()): Edition | null =>
-  editions.find((edition) => new Date(edition.endDate) > now) ?? null;
+export const getNextEdition = (now: Date = new Date()): Edition | null => getUpcomingEditions(now)[0] ?? null;

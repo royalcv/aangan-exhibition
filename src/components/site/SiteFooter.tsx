@@ -2,15 +2,15 @@ import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import aanganLogo from '@/assets/aangan-logo.webp';
-import { editions, getNextEdition } from '@/data/editions';
+import { getUpcomingEditions } from '@/data/editions';
+import { useNow } from '@/lib/useNow';
 import { site } from '@/data/site';
 
 const iconLink =
   'flex h-11 w-11 items-center justify-center rounded-full border border-white/30 text-white transition-colors duration-200 hover:border-primary hover:text-primary';
 
 const SiteFooter = () => {
-  const next = getNextEdition();
-  const listed = next ? editions.filter((edition) => new Date(edition.endDate) > new Date()) : [];
+  const listed = getUpcomingEditions(useNow());
 
   return (
     <footer className="ink-band on-ink">

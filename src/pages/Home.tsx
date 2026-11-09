@@ -10,7 +10,9 @@ import Rangoli from '@/design/Rangoli';
 import { duration, ease } from '@/design/motion';
 import { editions, getNextEdition } from '@/data/editions';
 import { site, stats } from '@/data/site';
+import { useNow } from '@/lib/useNow';
 import heroImage from '@/assets/backGi3.webp';
+import heroSrcSet from '@/assets/backGi3.webp?w=640;1024;1440;1920&format=webp&as=srcset';
 import { organizationSchema, eventSchema, breadcrumbSchema } from '@/lib/structuredData';
 
 // The hero content waits for the rangoli to be mostly drawn, then rises in one sequence.
@@ -28,7 +30,7 @@ const shopItems = unique(editions.map((edition) => edition.shop));
 const experienceItems = unique(editions.map((edition) => edition.experience));
 
 const Home = () => {
-  const next = getNextEdition();
+  const next = getNextEdition(useNow());
 
   return (
     <>
@@ -56,9 +58,12 @@ const Home = () => {
       <section className="ink-band on-ink relative isolate overflow-hidden">
         <img
           src={heroImage}
+          srcSet={heroSrcSet}
+          sizes="100vw"
           alt=""
           className="absolute inset-0 -z-20 h-full w-full object-cover"
-          fetchPriority="high"
+          // Lowercase on purpose: React 18 warns about the camelCase fetchPriority prop.
+          {...{ fetchpriority: "high" }}
           decoding="async"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink/90 via-ink/65 to-ink/35" aria-hidden="true" />

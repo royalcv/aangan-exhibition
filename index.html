@@ -5,99 +5,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- SEO title -->
-    <title>Aangan Exhibition | Best Exhibition in Amravati</title>
-
-    <!-- Meta Description -->
-    <meta
-      name="description"
-      content="Aangan Exhibition is one of the best exhibitions in Amravati, showcasing Indian culture, traditional arts, handicrafts, and empowering women entrepreneurs."
-    />
-
-    <!-- Author -->
-    <meta name="author" content="Aangan Exhibition" />
-
-    <!-- Keywords (optional, harmless) -->
-    <meta
-      name="keywords"
-      content="Best exhibition in Amravati, Aangan Exhibition, women exhibition Amravati, cultural exhibition Amravati, handicraft exhibition, Indian culture exhibition"
-    />
-
-    <!-- Open Graph (Facebook / WhatsApp) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://aangan-exhibition.netlify.app/" />
-    <meta
-      property="og:title"
-      content="Aangan Exhibition | Best Exhibition in Amravati"
-    />
-    <meta
-      property="og:description"
-      content="Discover Aangan Exhibition, one of the best exhibitions in Amravati celebrating Indian culture, handicrafts, and women entrepreneurs."
-    />
-    <meta
-      property="og:image"
-      content="https://aangan-exhibition.netlify.app/preview.jpg"
-    />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:type" content="image/jpeg" />
-    <meta property="og:image:alt" content="Aangan Exhibition - a celebration of culture, crafts, and women entrepreneurs" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Aangan Exhibition | Best Exhibition in Amravati" />
-    <meta
-      name="twitter:description"
-      content="Experience one of the best exhibitions in Amravati showcasing culture, creativity, and women-led businesses."
-    />
-    <meta
-      name="twitter:image"
-      content="https://aangan-exhibition.netlify.app/preview.jpg"
-    />
-
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://aangan-exhibition.netlify.app/" />
+    <!-- Per-page title, description, canonical, social cards and structured data are rendered by
+         src/components/Seo.tsx and written here at build time by scripts/prerender.mjs. -->
+    <!--app-head-->
 
     <meta name="theme-color" content="#0f1030" />
-
-    <!-- Fonts: Yatra One (display, Devanagari + Latin) and Mukta (body, Devanagari + Latin) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Yatra+One&display=swap"
-      rel="stylesheet"
-    />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/aangan-logo.png" />
 
-    <!-- Local SEO (Structured Data) -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Event",
-        "name": "Aangan Exhibition",
-        "description": "Aangan Exhibition is one of the best exhibitions in Amravati celebrating Indian culture, handicrafts, and women entrepreneurs.",
-        "location": {
-          "@type": "Place",
-          "name": "Amravati",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Amravati",
-            "addressRegion": "Maharashtra",
-            "addressCountry": "IN"
-          }
-        },
-        "organizer": {
-          "@type": "Organization",
-          "name": "Aangan Exhibition"
-        }
-      }
-    </script>
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app-html--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
