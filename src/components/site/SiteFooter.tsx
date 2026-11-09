@@ -80,7 +80,7 @@ const SiteFooter = () => {
 
       <div className="border-t border-white/15">
         <div className="page-wrap flex flex-col items-center justify-between gap-4 py-6 sm:flex-row">
-          <p className="text-sm text-white/70">© {new Date().getFullYear()} Aangan Exhibition. All rights reserved.</p>
+          <p className="text-sm text-white/70">© {new Date().getFullYear()} Aangan Exhibition, Amravati.</p>
           <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-6 text-sm text-white/85">
             <Link to="/about" className="inline-flex min-h-11 items-center hover:text-primary">
               About
