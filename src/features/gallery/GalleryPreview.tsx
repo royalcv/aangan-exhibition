@@ -7,7 +7,7 @@ import { pastVideos } from './videos';
 /** Home-page teaser for the gallery. The full gallery lives on /videos. */
 const GalleryPreview = () => (
   <section className="page-wrap py-16 md:py-24" aria-labelledby="moments-heading">
-    <h2 id="moments-heading" className="max-w-xl text-3xl md:text-4xl">
+    <h2 id="moments-heading" className="max-w-2xl text-3xl md:text-5xl">
       Moments from past editions
     </h2>
 
