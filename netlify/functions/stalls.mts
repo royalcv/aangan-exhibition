@@ -1,12 +1,13 @@
-import { stallSourceSchema, toStallStatus, type Stall } from '../../src/lib/stalls';
+import { compareStalls, maskStall, stallSourceSchema, toStallStatus, type Stall } from '../../src/lib/stalls';
 
 /**
- * GET /api/stalls: the free stalls for the Makar Sankranti edition.
+ * GET /api/stalls: the stalls for the Makar Sankranti edition, with how many are free and booked.
  *
- * Reads the Apps Script web app on the stall booking sheet, which publishes only free stalls
- * (stall number + "available"). This function applies the same rule again, so even an older script
- * that also sends booked, blocked or blank rows can't leak them: only stalls marked Available reach
- * a browser, and no totals are ever sent, so the size of the exhibition stays private.
+ * Reads the Apps Script web app on the stall booking sheet (stall number + status per row). Only
+ * rows marked Available or Booked are kept; blocked, held or blank rows are dropped. A booked
+ * stall's number is masked here before it is sent, so the page can show a blurred tile for it
+ * without the real number reaching a browser.
+ * The script must send the booked rows too, or the Booked and All counts only show free stalls.
  * The response is cached for a minute so a busy page doesn't hammer Google.
  * Set STALLS_ENDPOINT in the Netlify UI to point at a different script.
  */
@@ -43,13 +44,19 @@ export default async (request: Request) => {
   }
 
   const { updatedAt } = parsed.data;
-  const stalls = parsed.data.stalls.flatMap(({ stall, status }): Stall[] =>
-    toStallStatus(status) === 'available' ? [{ stall, status: 'available' }] : [],
-  );
+  // Sort on the real numbers first, then mask the booked ones, so the tiles stay in stall order.
+  const stalls = parsed.data.stalls
+    .flatMap(({ stall, status }): Stall[] => {
+      const known = toStallStatus(status);
+      return known ? [{ stall, status: known }] : [];
+    })
+    .sort(compareStalls)
+    .map((stall): Stall => (stall.status === 'booked' ? { ...stall, stall: maskStall(stall.stall) } : stall));
+  const available = stalls.filter((stall) => stall.status === 'available').length;
 
   return json(
     200,
-    { ok: true, updatedAt, available: stalls.length, stalls },
+    { ok: true, updatedAt, total: stalls.length, available, booked: stalls.length - available, stalls },
     {
       // Browsers re-ask after a minute; Netlify's CDN serves a cached copy meanwhile and refreshes in
       // the background, so a booking marked in the sheet shows on the site within about a minute.

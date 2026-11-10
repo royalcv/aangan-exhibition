@@ -35,23 +35,34 @@ export const stallSourceSchema = z.object({
 
 export type Stall = { stall: string; status: StallStatus };
 /**
- * What the website receives. Only the free stalls: the total, the booked count and booked stall
- * numbers stay on the server, so the size of the exhibition can't be read from the page or the API.
+ * What the website receives: every stall, already sorted, with the counts. A booked stall's number
+ * is masked on the server (see maskStall), so the page can show a blurred tile for it without the
+ * real number ever being in the browser.
  */
-export type StallFeed = { updatedAt: string; available: number; stalls: Stall[] };
+export type StallFeed = { updatedAt: string; total: number; available: number; booked: number; stalls: Stall[] };
 
 /** Sorts W2 before W10. */
 export const compareStalls = (a: Stall, b: Stall) =>
   a.stall.localeCompare(b.stall, 'en', { numeric: true, sensitivity: 'base' });
 
+/**
+ * Stand-in for a booked stall's number: the letters stay (they pick the group), every digit
+ * becomes 8, so W1 → W8 and W12 → W88. The page blurs this, and it reads as "something is written
+ * here" without being the real number.
+ */
+export const maskStall = (stall: string) => stall.replace(/\d/g, '8');
+
 export type StallGroup = { prefix: string; stalls: Stall[] };
 
-/** Groups stalls by their letter prefix (W1, W2… → "W"), keeping the sheet's order of groups. */
+/**
+ * Groups stalls by their letter prefix (W1, W2… → "W"), keeping the order they arrive in. The
+ * server sorts before masking, so sorting again here would shuffle the masked tiles.
+ */
 export const groupStalls = (stalls: Stall[]): StallGroup[] => {
   const groups = new Map<string, Stall[]>();
   for (const stall of stalls) {
     const prefix = stall.stall.match(/^[A-Za-z]+/)?.[0].toUpperCase() ?? '#';
     groups.set(prefix, [...(groups.get(prefix) ?? []), stall]);
   }
-  return Array.from(groups, ([prefix, list]) => ({ prefix, stalls: list.sort(compareStalls) }));
+  return Array.from(groups, ([prefix, list]) => ({ prefix, stalls: list }));
 };

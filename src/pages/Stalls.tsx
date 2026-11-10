@@ -10,7 +10,7 @@ import { groupStalls, type Stall, type StallFeed } from '@/lib/stalls';
 import { breadcrumbSchema, organizationSchema } from '@/lib/structuredData';
 import { cn } from '@/lib/utils';
 
-type Filter = 'available' | 'booked';
+type Filter = 'all' | 'available' | 'booked';
 type State = { kind: 'loading' } | { kind: 'error' } | { kind: 'ready'; feed: StallFeed; checkedAt: Date };
 
 /** Re-check when the visitor comes back to the tab after this long. */
@@ -23,22 +23,35 @@ const bookingLink = (stall: string) =>
 
 const timeFormat = new Intl.DateTimeFormat('en-IN', { hour: 'numeric', minute: '2-digit' });
 
-/**
- * Only the Available count is real. Booked shows a blurred stand-in: the real totals
- * are never sent to the browser (see netlify/functions/stalls.mts), so the size of the exhibition
- * stays private.
- */
-const filters: { value: Filter; label: string; count: (feed: StallFeed) => number | null; placeholder?: string }[] = [
+const filters: { value: Filter; label: string; count: (feed: StallFeed) => number }[] = [
+  { value: 'all', label: 'All', count: (feed) => feed.total },
   { value: 'available', label: 'Available', count: (feed) => feed.available },
-  { value: 'booked', label: 'Booked', count: () => null, placeholder: '88' },
+  { value: 'booked', label: 'Booked', count: (feed) => feed.booked },
 ];
-
-/** How many stand-in tiles the blurred "booked" block shows. Fixed, so it says nothing about the real number. */
-const HIDDEN_TILE_COUNT = 16;
 
 const gridClass = 'grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8';
 
-const StallTile = ({ stall }: { stall: Stall }) => (
+/**
+ * A booked stall: the tile is sharp, only the number is blurred. The number is a stand-in sent by
+ * the server (W1 arrives as W8), so the real one can't be read from the page or its source.
+ */
+const BookedTile = ({ stall }: { stall: Stall }) => (
+  <li className="flex min-h-24 flex-col justify-between rounded-xl border-2 border-border bg-muted/60 p-3 text-muted-foreground">
+    <span className="select-none font-display text-2xl leading-none blur-[3px]" aria-hidden="true">
+      {stall.stall}
+    </span>
+    <span className="mt-3 inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-semibold">
+      <Lock className="h-4 w-4 shrink-0" aria-hidden="true" />
+      Booked
+      <span className="sr-only"> stall</span>
+    </span>
+  </li>
+);
+
+const StallTile = ({ stall }: { stall: Stall }) =>
+  stall.status === 'booked' ? (
+    <BookedTile stall={stall} />
+  ) : (
     <li>
       <a
         href={bookingLink(stall.stall)}
@@ -57,32 +70,7 @@ const StallTile = ({ stall }: { stall: Stall }) => (
         </span>
       </a>
     </li>
-);
-
-/** Blurred stand-in for the booked stalls: plain tiles with no numbers, and a note on top. */
-const HiddenBooked = () => (
-  <div className="relative mt-10">
-    <ul className={cn(gridClass, 'pointer-events-none select-none blur-[3px]')} aria-hidden="true">
-      {Array.from({ length: HIDDEN_TILE_COUNT }, (_, index) => (
-        <li key={index} className="flex min-h-24 flex-col justify-between rounded-xl border border-border bg-muted/60 p-3">
-          <span className="h-6 w-12 rounded bg-muted-foreground/25" />
-          <span className="h-3 w-16 rounded bg-muted-foreground/20" />
-        </li>
-      ))}
-    </ul>
-    <div className="absolute inset-0 flex items-center justify-center p-4">
-      <p className="flex max-w-sm items-start gap-3 rounded-2xl border border-border bg-background/95 p-5 shadow-sm">
-        <Lock className="mt-1 h-5 w-5 shrink-0 text-muted-foreground" aria-hidden="true" />
-        <span>
-          <span className="block font-semibold">Booked stalls are private</span>
-          <span className="mt-1 block text-muted-foreground">
-            Looking for a particular spot? Message us on WhatsApp and we’ll help.
-          </span>
-        </span>
-      </p>
-    </div>
-  </div>
-);
+  );
 
 const SkeletonGrid = () => (
   <ul className={cn(gridClass, 'mt-6')} aria-hidden="true">
@@ -124,10 +112,21 @@ const Stalls = () => {
   }, [load]);
 
   const feed = state.kind === 'ready' ? state.feed : null;
-  const activeFilter: Filter = filter ?? 'available';
-  const groups = useMemo(() => (feed ? groupStalls(feed.stalls) : []), [feed]);
-  const showAvailable = activeFilter === 'available';
-  const showBooked = activeFilter === 'booked';
+  const activeFilter: Filter = filter ?? 'all';
+  const groups = useMemo(
+    () =>
+      feed
+        ? groupStalls(feed.stalls)
+            .map((group) => ({
+              ...group,
+              available: group.stalls.filter((stall) => stall.status === 'available').length,
+              shown: group.stalls.filter((stall) => activeFilter === 'all' || stall.status === activeFilter),
+            }))
+            .filter((group) => group.shown.length > 0)
+        : [],
+    [feed, activeFilter],
+  );
+  const canBook = activeFilter !== 'booked' && (feed?.available ?? 0) > 0;
 
   return (
     <>
@@ -222,16 +221,7 @@ const Stalls = () => {
                     )}
                   >
                     {option.label}
-                    {feed ? (
-                      option.placeholder ? (
-                        // A fixed stand-in, blurred: the real number is never sent to the browser.
-                        <span className="select-none tabular-nums opacity-75 blur-[4px]" aria-hidden="true">
-                          {option.placeholder}
-                        </span>
-                      ) : (
-                        <span className="tabular-nums opacity-75">{option.count(feed)}</span>
-                      )
-                    ) : null}
+                    {feed ? <span className="tabular-nums opacity-75">{option.count(feed)}</span> : null}
                   </button>
                 ))}
               </div>
@@ -247,41 +237,43 @@ const Stalls = () => {
 
             {feed ? (
               <>
-                {showAvailable ? (
+                {canBook ? (
                   <p className="mt-6 flex items-center gap-2 text-muted-foreground">
                     <CheckCircle2 className="h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
                     Tap an available stall to book it on WhatsApp. We’ll confirm it with you.
                   </p>
                 ) : null}
 
-                {showAvailable ? (
-                  groups.length === 0 ? (
-                    <p className="mt-10 text-lg">
-                      Every stall is booked for this edition. Message us to join the waiting list.
-                    </p>
-                  ) : (
-                    groups.map((group) => {
-                      const headingId = `stalls-${group.prefix}`;
-                      return (
-                        <div key={group.prefix} className="mt-10" role="region" aria-labelledby={headingId}>
-                          <h2 id={headingId} className="flex flex-wrap items-baseline gap-x-3 text-2xl">
-                            {group.prefix} stalls
-                            <span className="text-base font-normal text-muted-foreground">
-                              {group.stalls.length} available
-                            </span>
-                          </h2>
-                          <ul className={cn(gridClass, 'mt-4')}>
-                            {group.stalls.map((stall, index) => (
-                              // Index too: the sheet can list the same stall number twice by mistake.
-                              <StallTile key={`${stall.stall}-${index}`} stall={stall} />
-                            ))}
-                          </ul>
-                        </div>
-                      );
-                    })
-                  )
+                {activeFilter !== 'booked' && feed.available === 0 ? (
+                  <p className="mt-10 text-lg">
+                    Every stall is booked for this edition. Message us to join the waiting list.
+                  </p>
                 ) : null}
-                {showBooked ? <HiddenBooked /> : null}
+                {activeFilter === 'booked' && feed.booked === 0 ? (
+                  <p className="mt-10 text-lg">No stalls are booked yet.</p>
+                ) : null}
+
+                {groups.map((group) => {
+                  const headingId = `stalls-${group.prefix}`;
+                  return (
+                    <div key={group.prefix} className="mt-10" role="region" aria-labelledby={headingId}>
+                      <h2 id={headingId} className="flex flex-wrap items-baseline gap-x-3 text-2xl">
+                        {group.prefix} stalls
+                        <span className="text-base font-normal text-muted-foreground">
+                          {activeFilter === 'booked'
+                            ? `${group.shown.length} booked`
+                            : `${group.available} of ${group.stalls.length} available`}
+                        </span>
+                      </h2>
+                      <ul className={cn(gridClass, 'mt-4')}>
+                        {group.shown.map((stall, index) => (
+                          // Index too: masked booked stalls share a label, and the sheet can repeat a number.
+                          <StallTile key={`${stall.stall}-${index}`} stall={stall} />
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })}
               </>
             ) : (
               <SkeletonGrid />
