@@ -7,7 +7,8 @@ import GoogleReviewCta from '@/components/GoogleReviewCta';
 import { GalleryPreview, UpcomingPreview } from '@/features/gallery';
 import SankrantiHero from '@/features/sankranti/SankrantiHero';
 import Rangoli from '@/design/Rangoli';
-import { editions, getPastEditions, getUpcomingEditions, type Edition } from '@/data/editions';
+import StallAvailabilityButton from '@/components/StallAvailabilityButton';
+import { editions, getPastEditions, getUpcomingEditions, stallsEdition, type Edition } from '@/data/editions';
 import { site, stats } from '@/data/site';
 import { useNow } from '@/lib/useNow';
 import { cn } from '@/lib/utils';
@@ -21,7 +22,9 @@ const experienceItems = unique(editions.map((edition) => edition.experience));
 const EditionCard = ({ edition, ended }: { edition: Edition; ended: boolean }) => (
   <article className="grid gap-6 border-t-2 border-foreground/80 py-10 last:border-b-2 md:grid-cols-[2fr_3fr] md:gap-12">
     <div>
-      <p className="text-lg font-semibold text-muted-foreground">{edition.name}</p>
+      <p className="text-lg font-semibold text-muted-foreground">
+        {edition.name}, {edition.city}
+      </p>
       <h3 className="mt-1 font-display text-5xl leading-tight text-madder md:text-6xl">{edition.shortDate}</h3>
       <p className="mt-1 text-lg text-muted-foreground">
         {new Date(edition.startDate).getFullYear()}
@@ -53,14 +56,10 @@ const EditionCard = ({ edition, ended }: { edition: Edition; ended: boolean }) =
             <Button asChild variant="outline">
               <a href={edition.directions} target="_blank" rel="noopener noreferrer">
                 Get directions
-                <span className="sr-only"> to {edition.venue}</span>
+                <span className="sr-only"> to {edition.venue}, {edition.city} (opens Google Maps in a new tab)</span>
               </a>
             </Button>
-            {edition.stallsPage ? (
-              <Button asChild variant="outline">
-                <Link to={edition.stallsPage}>Check stall availability</Link>
-              </Button>
-            ) : null}
+            <StallAvailabilityButton edition={edition} />
           </div>
         </>
       )}
@@ -77,9 +76,9 @@ const Home = () => {
     <>
       <Seo
         title="Aangan Exhibition | Best Exhibition in Amravati & Vidarbha"
-        description="Aangan Exhibition is Amravati's most-loved exhibition, showcasing handicrafts, fashion, jewellery, and women entrepreneurs from across Vidarbha. Visit our next edition in Amravati."
+        description="Aangan Exhibition is Amravati's most-loved exhibition, showcasing handicrafts, fashion, jewellery, and women entrepreneurs from across Vidarbha. Visit our Makar Sankranti Special editions in Akola (2–3 January 2027) and Amravati (9–10 January 2027)."
         path="/"
-        keywords="best exhibition in Amravati, exhibition in Vidarbha, Amravati exhibition, best shopping platform in Amravati, women entrepreneurs Amravati, handicraft exhibition Amravati, cultural exhibition Vidarbha"
+        keywords="best exhibition in Amravati, Makar Sankranti exhibition Akola, exhibition in Akola, Makar Sankranti exhibition Amravati, exhibition in Vidarbha, Amravati exhibition, best shopping platform in Amravati, women entrepreneurs Amravati, handicraft exhibition Amravati, cultural exhibition Vidarbha"
         structuredData={[
           organizationSchema,
           breadcrumbSchema([{ name: 'Home', path: '/' }]),
@@ -89,6 +88,7 @@ const Home = () => {
               startDate: edition.startDate,
               endDate: edition.endDate,
               location: `${edition.venue}, ${edition.area}`,
+              locality: edition.city,
               description: edition.schemaDescription,
             }),
           ),
@@ -125,7 +125,9 @@ const Home = () => {
         </dl>
       </section>
 
-      {/* What you'll find */}
+      {/* What you'll find: built from the editions' shop/experience lists, so it stays hidden
+          until at least one edition lists something. */}
+      {shopItems.length + experienceItems.length > 0 ? (
       <section className="page-wrap py-16 md:py-24" aria-labelledby="inside-heading">
         <h2 id="inside-heading" className="max-w-2xl text-3xl md:text-5xl">
           Shop, taste and watch, all under one roof
@@ -153,6 +155,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+      ) : null}
 
       {/* Mission */}
       <section className="ink-band on-ink">
@@ -177,7 +180,7 @@ const Home = () => {
       {/* Editions: what's coming up first, then the ones that just happened. */}
       <section id="editions" className="page-wrap scroll-mt-24 pb-16 pt-10 md:pb-24 md:pt-14" aria-labelledby="editions-heading">
         <h2 id="editions-heading" className="max-w-2xl text-3xl md:text-5xl">
-          {upcoming.length > 1 ? 'Our next editions' : upcoming.length === 1 ? 'Our next edition' : 'Thank you, Amravati'}
+          {upcoming.length > 1 ? 'Our next editions' : upcoming.length === 1 ? 'Our next edition' : 'Thank you, Vidarbha'}
         </h2>
         {upcoming.length > 0 ? (
           <div className="mt-10">
@@ -211,8 +214,10 @@ const Home = () => {
             <p className="mt-3 text-lg">See which stalls are still free, then message us to book one.</p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Button asChild variant="ink">
-              <Link to="/stalls">Check stall availability</Link>
+            <Button asChild variant="ink" className="h-auto min-h-11 whitespace-normal py-2 text-center">
+              <Link to={stallsEdition.stallsPage ?? '/stalls'}>
+                Check stall availability – {stallsEdition.city} ({stallsEdition.shortDate})
+              </Link>
             </Button>
             <WhatsAppButton />
           </div>

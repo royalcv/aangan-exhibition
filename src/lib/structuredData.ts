@@ -35,6 +35,8 @@ interface EventInput {
   startDate: string;
   endDate: string;
   location: string;
+  /** City for the address; defaults to Amravati. */
+  locality?: string;
   description: string;
 }
 
@@ -52,7 +54,7 @@ export function eventSchema(event: EventInput) {
       name: event.location,
       address: {
         '@type': 'PostalAddress',
-        addressLocality: 'Amravati',
+        addressLocality: event.locality ?? 'Amravati',
         addressRegion: 'Maharashtra',
         addressCountry: 'IN',
       },

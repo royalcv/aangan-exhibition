@@ -1,13 +1,19 @@
 import { mapsLink } from './site';
-import { sankrantiEdition } from './sankranti';
 
+/**
+ * Every Aangan edition, in date order. This is the one place to edit event details: the home hero,
+ * the edition cards, the footer, the stall availability page and the search-engine event data all
+ * read from here.
+ */
 export type Edition = {
   id: string;
-  /** Which edition this is, e.g. "Diwali Special". */
+  /** Which edition this is, e.g. "Makar Sankranti Special Edition". */
   name: string;
-  /** Short date for tight spaces, e.g. "24–25 Oct". */
+  /** City shown next to the name, e.g. "Akola". Also used in the search-engine event address. */
+  city: string;
+  /** Short date for tight spaces, e.g. "2–3 Jan". */
   shortDate: string;
-  /** Full date line, e.g. "24–25 October 2026". */
+  /** Full date line, e.g. "2nd & 3rd January 2027". */
   dateLabel: string;
   startDate: string;
   endDate: string;
@@ -21,59 +27,48 @@ export type Edition = {
   /** What's on sale and what else is on; empty lists are simply not shown. */
   shop: string[];
   experience: string[];
+  /** Google Maps link for "Get directions". Opens in a new tab. */
   directions: string;
-  /** Link to the stall availability page, for editions still taking exhibitors. */
+  /** Link to the stall availability page for this edition. */
   stallsPage?: string;
+  /**
+   * Flip to true when this edition's stall availability is live. While false, the
+   * "Check Stall Availability" button shows as a disabled "Coming Soon" button.
+   */
+  stallAvailabilityEnabled: boolean;
   schemaName: string;
   schemaDescription: string;
 };
 
 export const editions: Edition[] = [
   {
-    id: 'rajapeth',
-    name: 'Diwali Special',
-    shortDate: '24–25 Oct',
-    dateLabel: '24–25 October 2026',
-    startDate: '2026-10-24T10:00:00+05:30',
-    endDate: '2026-10-25T22:00:00+05:30',
-    hours: '10 AM to 10 PM',
-    venue: 'The Hotel Aurtus',
-    area: 'Rajapeth, Amravati',
-    expected: '60,000+ visitors expected over two days',
-    description:
-      'The Diwali Special edition: traditional arts, crafts and cultural heritage, with artisans from across India.',
-    shop: ['Fashion', 'Home made', 'Home decor', 'Traditional crafts', 'Art'],
-    experience: ['Cultural performances', 'Food festival'],
-    directions: mapsLink('The Hotel Aurtus, Rajapeth, Amravati'),
-    schemaName: 'Aangan The Grand Exhibition - Diwali Special (Rajapeth, Amravati)',
+    id: 'makar-sankranti-2027-akola',
+    name: 'Makar Sankranti Special Exhibition',
+    city: 'Akola',
+    shortDate: '2–3 Jan',
+    dateLabel: '2nd & 3rd January 2027',
+    startDate: '2027-01-02T10:00:00+05:30',
+    // End of the second day in India time, so it only counts as "ended" once the 3rd is over.
+    endDate: '2027-01-03T23:59:00+05:30',
+    venue: 'Hotel Shagun',
+    area: 'Jatharpeth Road, Akola',
+    description: 'Our Makar Sankranti Special Exhibition comes to Akola.',
+    shop: [],
+    experience: [],
+    directions: 'https://maps.app.goo.gl/1Bus6L6PzvQsgHBg7',
+    stallsPage: '/stalls',
+    stallAvailabilityEnabled: false,
+    schemaName: 'AANGAN – Makar Sankranti Special Exhibition, Akola',
     schemaDescription:
-      'Diwali Special Exhibition featuring fashion, home decor, traditional crafts, cultural performances, and food stalls in Amravati.',
-  },
-  {
-    id: 'camp-road',
-    name: 'Diwali Special',
-    shortDate: '31 Oct – 1 Nov',
-    dateLabel: '31 October – 1 November 2026',
-    startDate: '2026-10-31T10:00:00+05:30',
-    endDate: '2026-11-01T22:00:00+05:30',
-    hours: '10 AM to 10 PM',
-    venue: 'Hotel Mefhil Inn',
-    area: 'Camp Road, Amravati',
-    expected: '50,000+ visitors expected over two days',
-    description: 'The second Diwali Special edition, with a full handicraft bazaar and live demonstrations.',
-    shop: ['Fashion', 'Home made', 'Home decor', 'Traditional crafts', 'Art', 'Handicraft bazaar'],
-    experience: ['Cultural performances', 'Food festival', 'Heritage exhibits', 'Live demonstrations', 'Traditional music'],
-    directions: mapsLink('Hotel Mefhil Inn, Camp Road, Amravati'),
-    schemaName: 'Aangan The Grand Exhibition - Diwali Special (Camp Road, Amravati)',
-    schemaDescription:
-      'Diwali Special Exhibition featuring fashion, home decor, traditional crafts, heritage exhibits, live demonstrations, and a handicraft bazaar in Amravati.',
+      'Makar Sankranti Special Exhibition of Aangan Exhibition at Hotel Shagun, Jatharpeth Road, Akola.',
   },
   {
     id: 'makar-sankranti-2027',
-    name: sankrantiEdition.edition,
+    name: 'Makar Sankranti Special Edition',
+    city: 'Amravati',
     shortDate: '9–10 Jan',
-    dateLabel: sankrantiEdition.dates,
-    startDate: sankrantiEdition.startDate,
+    dateLabel: '9th & 10th January 2027',
+    startDate: '2027-01-09',
     // End of the second day in Amravati time, so it only counts as "ended" once the 10th is over.
     endDate: '2027-01-10T23:59:00+05:30',
     venue: 'Abhiyanta Bhavan',
@@ -82,13 +77,23 @@ export const editions: Edition[] = [
       'Our Makar Sankranti Special Edition: two festive days with Amravati’s women entrepreneurs, artisans and homegrown brands.',
     shop: [],
     experience: [],
-    directions: mapsLink(sankrantiEdition.mapsQuery),
+    directions: mapsLink('Abhiyanta Bhavan, Shegaon Naka, Amravati'),
     stallsPage: '/stalls',
+    stallAvailabilityEnabled: true,
     schemaName: 'Aangan Exhibition - Makar Sankranti Special Edition (Shegaon Naka, Amravati)',
     schemaDescription:
       'Makar Sankranti Special Edition of Aangan Exhibition at Abhiyanta Bhavan, Shegaon Naka, Amravati, with stalls from women entrepreneurs, artisans and homegrown brands.',
   },
 ];
+
+/**
+ * The edition the /stalls page (and its live sheet, GET /api/stalls) is about. Change the id here
+ * if the stall sheet is switched to another edition.
+ */
+export const stallsEdition: Edition = editions.find((edition) => edition.id === 'makar-sankranti-2027')!;
+
+/** "Abhiyanta Bhavan, Shegaon Naka, Amravati" */
+export const fullVenue = (edition: Edition) => `${edition.venue}, ${edition.area}`;
 
 /** True once the edition's last day is over. */
 export const hasEnded = (edition: Edition, now: Date = new Date()): boolean => new Date(edition.endDate) <= now;

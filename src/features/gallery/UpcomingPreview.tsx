@@ -27,12 +27,12 @@ const UpcomingPreview = () => {
       <div className="mx-auto w-full max-w-[88rem] px-5 py-16 sm:px-8 md:py-24">
         <div className="mx-auto max-w-2xl text-center">
           <h2 id="upcoming-heading" className="text-3xl text-white md:text-5xl">
-            {isUpcoming ? 'Upcoming moments' : 'This Diwali season'}
+            {isUpcoming ? 'Upcoming moments' : 'This Makar Sankranti season'}
           </h2>
           <p className="mt-4 text-lg text-white/80">
             {isUpcoming
               ? 'Get a feel for the next editions before you visit. Press play to watch.'
-              : 'The promos from our 2026 Diwali editions. Press play to watch.'}
+              : 'The promos from our Makar Sankranti 2027 editions. Press play to watch.'}
           </p>
         </div>
   
@@ -45,7 +45,7 @@ const UpcomingPreview = () => {
                   poster={video.poster}
                   title={video.title}
                   aspectRatio="wide"
-                  label={isUpcoming ? 'Upcoming' : 'Diwali 2026'}
+                  label={isUpcoming ? 'Upcoming' : 'Sankranti 2027'}
                   tone="glass"
                   className="rounded-xl"
                 />

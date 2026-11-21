@@ -1,16 +1,19 @@
 import { useEffect, useRef, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
-import { CalendarDays, LayoutGrid, MapPin } from 'lucide-react';
+import { CalendarDays, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import StallAvailabilityButton from '@/components/StallAvailabilityButton';
 import { WhatsAppIcon } from '@/components/WhatsAppButton';
-import { mapsLink, site } from '@/data/site';
+import { site } from '@/data/site';
 import { sankrantiEdition } from '@/data/sankranti';
+import { editions, type Edition } from '@/data/editions';
 
 /* ────────────────────────────────────────────────────────────────────────────
  * 1. EVENT DETAILS: edit the dates and venue in src/data/sankranti.ts (the stall
  *    availability page reads the same values).
  * ──────────────────────────────────────────────────────────────────────────── */
 const EVENT = sankrantiEdition;
+/** Both Makar Sankranti editions (Akola, then Amravati), shown as cards. Edit them in src/data/editions.ts. */
+const HERO_EDITIONS = editions.filter((edition) => edition.id.startsWith('makar-sankranti'));
 
 /* ────────────────────────────────────────────────────────────────────────────
  * 2. COLOURS: edit the palette here. Everything in the scene reads these tokens.
@@ -80,7 +83,7 @@ const MOTION = `
   /* Off screen: stop spending frames. */
   .skh[data-paused] .skh-scene * { animation-play-state: paused; }
   /* Phones and tablets: drop the far-sky extras (they sit outside the cropped view anyway). */
-  @media (max-width: 1023px) { .skh-scene .skh-far { display: none; } }
+  @media (max-width: 1279px) { .skh-scene .skh-far { display: none; } }
   /* Reduced motion: the same scene, standing still. */
   @media (prefers-reduced-motion: reduce) {
     .skh-scene, .skh-scene * { animation: none !important; }
@@ -398,8 +401,42 @@ const KiteScene = () => (
   </svg>
 );
 
+/** One edition: city, dates, venue, directions and stall availability (or "Coming Soon"). */
+const EventCard = ({ edition }: { edition: Edition }) => (
+  <li
+    className="flex flex-col rounded-2xl border border-white/15 p-5 shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
+    style={{ backgroundColor: 'rgb(5 4 7 / 0.85)' }}
+  >
+    <p className="font-display text-2xl leading-tight text-primary">{edition.city}</p>
+    <p className="mt-3 flex items-start gap-2.5 text-lg font-semibold text-white">
+      <CalendarDays className="mt-1 h-5 w-5 shrink-0" style={{ color: 'var(--skh-saffron)' }} aria-hidden="true" />
+      <span className="sr-only">Dates: </span>
+      <time dateTime={edition.startDate}>{edition.dateLabel}</time>
+    </p>
+    <p className="mt-2 flex items-start gap-2.5 text-white/90">
+      <MapPin className="mt-1 h-5 w-5 shrink-0" style={{ color: 'var(--skh-saffron)' }} aria-hidden="true" />
+      <span className="sr-only">Venue: </span>
+      <span>
+        {edition.venue}, {edition.area}
+      </span>
+    </p>
+    <div className="mt-auto flex flex-col gap-2.5 pt-5">
+      <Button asChild>
+        <a href={edition.directions} target="_blank" rel="noopener noreferrer">
+          Get Directions
+          <span className="sr-only">
+            {' '}
+            to {edition.venue}, {edition.city} (opens Google Maps in a new tab)
+          </span>
+        </a>
+      </Button>
+      <StallAvailabilityButton edition={edition} variant="light" icon />
+    </div>
+  </li>
+);
+
 /**
- * Makar Sankranti hero for the January 2027 edition: event name, dates and venue above the fold,
+ * Makar Sankranti hero for the January 2027 editions: event name, dates and venue above the fold,
  * one primary action (directions), and an animated rooftop kite-flying scene.
  * The text is plain HTML, so it is pre-rendered and readable before any animation starts.
  */
@@ -420,14 +457,15 @@ const SankrantiHero = () => {
   return (
     <section
       ref={sectionRef}
-      className="skh relative isolate flex min-h-[calc(100svh-72px)] flex-col overflow-hidden lg:block"
-      style={{ backgroundColor: 'var(--skh-night)' }}
+      className="skh relative isolate -mb-px flex min-h-[calc(100svh-72px)] flex-col overflow-hidden xl:block"
+      // The background turns to the indigo of the numbers band at the bottom, so the two sections run together.
+      style={{ background: 'linear-gradient(var(--skh-night) 55%, hsl(var(--ink)))' }}
       aria-labelledby="skh-title"
     >
       <style>{PALETTE + MOTION}</style>
 
-      <div className="page-wrap relative z-10 pb-4 pt-12 sm:pt-16 lg:flex lg:min-h-[calc(100svh-72px)] lg:items-center lg:py-20">
-        <div className="max-w-xl">
+      <div className="page-wrap relative z-10 pb-4 pt-12 sm:pt-16 xl:flex xl:min-h-[calc(100svh-72px)] xl:items-center xl:py-20">
+        <div className="max-w-2xl">
           <h1
             id="skh-title"
             className="font-display text-[2.75rem] leading-[1.05] tracking-wide text-primary [text-wrap:balance] sm:text-6xl lg:text-7xl"
@@ -436,33 +474,14 @@ const SankrantiHero = () => {
           </h1>
           <p className="mt-4 font-display text-2xl text-white sm:text-3xl">{EVENT.edition}</p>
 
-          <ul className="mt-8 space-y-4 text-lg text-white sm:text-xl">
-            <li className="flex items-start gap-3">
-              <CalendarDays className="mt-0.5 h-6 w-6 shrink-0" style={{ color: 'var(--skh-saffron)' }} aria-hidden="true" />
-              <span className="sr-only">Dates: </span>
-              <time dateTime={EVENT.startDate}>{EVENT.dates}</time>
-            </li>
-            <li className="flex items-start gap-3">
-              <MapPin className="mt-0.5 h-6 w-6 shrink-0" style={{ color: 'var(--skh-saffron)' }} aria-hidden="true" />
-              <span className="sr-only">Venue: </span>
-              <span>{EVENT.venue}</span>
-            </li>
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2" aria-label="Makar Sankranti editions">
+            {HERO_EDITIONS.map((edition) => (
+              <EventCard key={edition.id} edition={edition} />
+            ))}
           </ul>
 
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Button asChild size="lg">
-              <a href={mapsLink(EVENT.mapsQuery)} target="_blank" rel="noopener noreferrer">
-                Get Directions
-                <span className="sr-only"> to {EVENT.venue} (opens Google Maps in a new tab)</span>
-              </a>
-            </Button>
-            <Button asChild size="lg" variant="light">
-              <Link to="/stalls">
-                <LayoutGrid />
-                Check Stall Availability
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="light">
+          <div className="mt-5">
+            <Button asChild variant="link" className="h-11 px-0 text-white hover:text-primary">
               <a href={site.whatsapp} target="_blank" rel="noopener noreferrer">
                 <WhatsAppIcon />
                 Ask on WhatsApp
@@ -473,22 +492,19 @@ const SankrantiHero = () => {
         </div>
       </div>
 
-      {/* Phones: the scene sits below the text. Desktop: it fills the hero behind the text. */}
-      <div className="pointer-events-none relative h-[52svh] min-h-[300px] w-full lg:absolute lg:inset-0 lg:h-full">
+      {/* Phones, tablets and small laptops: the scene sits below the text. 1280px and up: it fills the hero behind the text. */}
+      <div
+        // Faded at the bottom into the hero's indigo background (and, when it sits below the text, at the top too).
+        className="pointer-events-none relative h-[52svh] min-h-[300px] w-full [-webkit-mask-image:linear-gradient(transparent,#000_4rem,#000_calc(100%-7rem),transparent)] [mask-image:linear-gradient(transparent,#000_4rem,#000_calc(100%-7rem),transparent)] lg:aspect-[16/9] lg:h-auto xl:absolute xl:inset-0 xl:aspect-auto xl:h-full xl:[-webkit-mask-image:linear-gradient(#000_calc(100%-7rem),transparent)] xl:[mask-image:linear-gradient(#000_calc(100%-7rem),transparent)]"
+      >
         <KiteScene />
         <div
-          className="absolute inset-x-0 top-0 h-16 lg:hidden"
-          style={{ background: 'linear-gradient(var(--skh-night), transparent)' }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 hidden lg:block"
+          className="absolute inset-0 hidden xl:block"
           style={{ background: 'linear-gradient(90deg, var(--skh-night) 0%, rgb(5 4 7 / 0.85) 30%, rgb(5 4 7 / 0) 60%)' }}
           aria-hidden="true"
         />
       </div>
 
-      <div className="dot-rule relative z-10 lg:absolute lg:inset-x-0 lg:bottom-0" aria-hidden="true" />
     </section>
   );
 };

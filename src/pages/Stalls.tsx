@@ -4,7 +4,7 @@ import { CalendarDays, CheckCircle2, Lock, MapPin, RefreshCw, TriangleAlert } fr
 import { Button } from '@/components/ui/button';
 import Seo from '@/components/Seo';
 import WhatsAppButton, { WhatsAppIcon } from '@/components/WhatsAppButton';
-import { sankrantiEdition as EVENT } from '@/data/sankranti';
+import { fullVenue, stallsEdition as EVENT } from '@/data/editions';
 import { site } from '@/data/site';
 import { groupStalls, type Stall, type StallFeed } from '@/lib/stalls';
 import { breadcrumbSchema, organizationSchema } from '@/lib/structuredData';
@@ -18,7 +18,7 @@ const STALE_AFTER_MS = 60_000;
 
 const bookingLink = (stall: string) =>
   `${site.whatsapp}?text=${encodeURIComponent(
-    `Hi Aangan! I'd like to book stall ${stall} at the ${EVENT.edition} (${EVENT.dates}). Is it still available?`,
+    `Hi Aangan! I'd like to book stall ${stall} at the ${EVENT.name} (${EVENT.dateLabel}). Is it still available?`,
   )}`;
 
 const timeFormat = new Intl.DateTimeFormat('en-IN', { hour: 'numeric', minute: '2-digit' });
@@ -131,8 +131,8 @@ const Stalls = () => {
   return (
     <>
       <Seo
-        title={`Stall Availability | Aangan ${EVENT.edition}, Amravati`}
-        description={`See which exhibitor stalls are still free at Aangan Exhibition's ${EVENT.edition}, ${EVENT.dates} at ${EVENT.venue}, and book one on WhatsApp.`}
+        title={`Stall Availability | Aangan ${EVENT.name}, Amravati`}
+        description={`See which exhibitor stalls are still free at Aangan Exhibition's ${EVENT.name}, ${EVENT.dateLabel} at ${fullVenue(EVENT)}, and book one on WhatsApp.`}
         path="/stalls"
         keywords="Aangan stall booking, exhibition stall Amravati, book stall Amravati exhibition, Makar Sankranti exhibition Amravati, exhibitor stall Vidarbha"
         structuredData={[
@@ -148,7 +148,7 @@ const Stalls = () => {
       <section className="ink-band on-ink" aria-labelledby="stalls-title">
         <div className="page-wrap grid gap-10 py-14 md:grid-cols-[3fr_2fr] md:items-end md:py-20">
           <div>
-            <p className="font-display text-xl text-primary">{EVENT.edition}</p>
+            <p className="font-display text-xl text-primary">{EVENT.name}</p>
             <h1 id="stalls-title" className="mt-2 text-4xl text-white md:text-6xl">
               Stall availability
             </h1>
@@ -156,12 +156,12 @@ const Stalls = () => {
               <li className="flex items-start gap-3">
                 <CalendarDays className="mt-1 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
                 <span className="sr-only">Dates: </span>
-                <time dateTime={EVENT.startDate}>{EVENT.dates}</time>
+                <time dateTime={EVENT.startDate}>{EVENT.dateLabel}</time>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="mt-1 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
                 <span className="sr-only">Venue: </span>
-                <span>{EVENT.venue}</span>
+                <span>{fullVenue(EVENT)}</span>
               </li>
             </ul>
           </div>

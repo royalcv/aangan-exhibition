@@ -50,7 +50,7 @@ export const pastVideos: GalleryVideo[] = Array.from({ length: 23 }, (_, i) => (
  * "Upcoming"; once they're over it labels the videos as that season's promos. Update this list
  * when you swap in teasers for a new edition.
  */
-export const teaserEditionIds = ['rajapeth', 'camp-road'];
+export const teaserEditionIds = ['makar-sankranti-2027-akola', 'makar-sankranti-2027'];
 
 export const upcomingVideos: GalleryVideo[] = Array.from({ length: 4 }, (_, i) => ({
   src: byNumber(1 + i),
