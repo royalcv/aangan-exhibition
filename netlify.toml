@@ -9,13 +9,9 @@
 [functions]
   directory = "netlify/functions"
 
-# The old Netlify address permanently redirects to the real domain, keeping the path.
+# The old Netlify addresses (both projects build from this repo) permanently redirect to the real
+# domain, keeping the path: see public/_redirects, which Vite copies into dist/.
 # (www.aanganexhibition.com -> aanganexhibition.com is handled by Netlify's domain settings.)
-[[redirects]]
-  from = "https://aanganexhibition.netlify.app/*"
-  to = "https://aanganexhibition.com/:splat"
-  status = 301
-  force = true
 
 # Every route is pre-rendered to its own HTML file (scripts/prerender.mjs), so there is no
 # catch-all SPA redirect: /about serves about/index.html, and unknown URLs get dist/404.html with
