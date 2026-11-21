@@ -80,8 +80,8 @@ const Contact = () => {
   return (
     <>
       <Seo
-        title="Contact Us | Aangan Exhibition Amravati"
-        description="Get in touch with Aangan Exhibition for stall bookings, sponsorships, and inquiries. Visit us in Amravati or reach out by phone, email, or WhatsApp."
+        title="Contact Aangan Exhibition | Stall Booking in Amravati"
+        description="Contact Aangan Exhibition in Amravati for stall bookings, sponsorships and enquiries about our Akola and Amravati editions, by phone, email or WhatsApp."
         path="/contact"
         keywords="contact Aangan Exhibition, exhibition stall booking Amravati, sponsorship exhibition Amravati, exhibition inquiries Vidarbha"
         structuredData={[

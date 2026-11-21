@@ -76,18 +76,19 @@ const Home = () => {
     <>
       <Seo
         title="Aangan Exhibition | Best Exhibition in Amravati & Vidarbha"
-        description="Aangan Exhibition is Amravati's most-loved exhibition, showcasing handicrafts, fashion, jewellery, and women entrepreneurs from across Vidarbha. Visit our Makar Sankranti Special editions in Akola (2–3 January 2027) and Amravati (9–10 January 2027)."
+        description="Shop handicrafts, fashion and jewellery from Vidarbha's women entrepreneurs at Aangan’s Makar Sankranti Special: Akola 2–3 Jan, Amravati 9–10 Jan 2027."
         path="/"
         keywords="best exhibition in Amravati, Makar Sankranti exhibition Akola, exhibition in Akola, Makar Sankranti exhibition Amravati, exhibition in Vidarbha, Amravati exhibition, best shopping platform in Amravati, women entrepreneurs Amravati, handicraft exhibition Amravati, cultural exhibition Vidarbha"
         structuredData={[
           organizationSchema,
           breadcrumbSchema([{ name: 'Home', path: '/' }]),
-          ...editions.map((edition) =>
+          ...upcoming.map((edition) =>
             eventSchema({
               name: edition.schemaName,
               startDate: edition.startDate,
               endDate: edition.endDate,
               location: `${edition.venue}, ${edition.area}`,
+              streetAddress: edition.area.replace(`, ${edition.city}`, ''),
               locality: edition.city,
               description: edition.schemaDescription,
             }),

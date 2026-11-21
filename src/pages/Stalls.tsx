@@ -131,8 +131,8 @@ const Stalls = () => {
   return (
     <>
       <Seo
-        title={`Stall Availability | Aangan ${EVENT.name}, Amravati`}
-        description={`See which exhibitor stalls are still free at Aangan Exhibition's ${EVENT.name}, ${EVENT.dateLabel} at ${fullVenue(EVENT)}, and book one on WhatsApp.`}
+        title={`Stall Availability | Aangan Makar Sankranti, ${EVENT.city}`}
+        description={`See which exhibitor stalls are still free at Aangan’s ${EVENT.name}, ${EVENT.dateLabel}, ${EVENT.venue}, ${EVENT.city}. Book on WhatsApp.`}
         path="/stalls"
         keywords="Aangan stall booking, exhibition stall Amravati, book stall Amravati exhibition, Makar Sankranti exhibition Amravati, exhibitor stall Vidarbha"
         structuredData={[

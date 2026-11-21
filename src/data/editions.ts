@@ -58,7 +58,7 @@ export const editions: Edition[] = [
     directions: 'https://maps.app.goo.gl/1Bus6L6PzvQsgHBg7',
     stallsPage: '/stalls',
     stallAvailabilityEnabled: false,
-    schemaName: 'AANGAN – Makar Sankranti Special Exhibition, Akola',
+    schemaName: 'AANGAN Makar Sankranti Special – Akola',
     schemaDescription:
       'Makar Sankranti Special Exhibition of Aangan Exhibition at Hotel Shagun, Jatharpeth Road, Akola.',
   },
@@ -80,7 +80,7 @@ export const editions: Edition[] = [
     directions: mapsLink('Abhiyanta Bhavan, Shegaon Naka, Amravati'),
     stallsPage: '/stalls',
     stallAvailabilityEnabled: true,
-    schemaName: 'Aangan Exhibition - Makar Sankranti Special Edition (Shegaon Naka, Amravati)',
+    schemaName: 'AANGAN Makar Sankranti Special – Amravati',
     schemaDescription:
       'Makar Sankranti Special Edition of Aangan Exhibition at Abhiyanta Bhavan, Shegaon Naka, Amravati, with stalls from women entrepreneurs, artisans and homegrown brands.',
   },

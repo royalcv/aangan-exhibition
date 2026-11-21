@@ -8,8 +8,8 @@ const NotFound = () => {
   return (
     <div className="page-wrap flex min-h-[60vh] flex-col items-start justify-center py-20">
       <Seo
-        title="Page Not Found | Aangan Exhibition"
-        description="The page you're looking for doesn't exist or has been moved."
+        title="Page Not Found | Aangan Exhibition, Amravati & Akola"
+        description="The page you are looking for does not exist or has moved. Head back to the Aangan Exhibition home page to find the next edition in Akola or Amravati."
         path={location.pathname}
         noindex
       />

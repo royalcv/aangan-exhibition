@@ -43,8 +43,8 @@ const journey = [
 const About = () => (
   <>
     <Seo
-      title="About Us | Aangan Exhibition - Amravati's Premier Cultural Exhibition"
-      description="Aangan Exhibition empowers women entrepreneurs and celebrates Amravati & Vidarbha's culture. Meet the team behind the best exhibition in Amravati, with 8+ editions and 1,50,000+ visitors."
+      title="About Aangan Exhibition | Women Entrepreneurs of Amravati"
+      description="Aangan Exhibition empowers women entrepreneurs and celebrates the culture of Amravati and Vidarbha. Meet the team behind 8+ editions and 1,50,000+ visitors."
       path="/about"
       keywords="Aangan Exhibition Amravati, best exhibition in Amravati, exhibition organizers Amravati, women entrepreneurs Vidarbha, cultural exhibition history Amravati"
       structuredData={[

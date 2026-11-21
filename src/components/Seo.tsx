@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { SITE_URL } from '@/lib/seoConfig';
+import { pageUrl, SITE_URL } from '@/lib/seoConfig';
 
 const DEFAULT_IMAGE = `${SITE_URL}/preview.jpg`;
 
@@ -16,7 +16,7 @@ interface SeoProps {
 }
 
 const Seo = ({ title, description, path, keywords, image = DEFAULT_IMAGE, noindex, structuredData }: SeoProps) => {
-  const url = `${SITE_URL}${path}`;
+  const url = pageUrl(path);
   const schemas = structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : [];
 
   return (
@@ -35,7 +35,7 @@ const Seo = ({ title, description, path, keywords, image = DEFAULT_IMAGE, noinde
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       <meta property="og:image:alt" content="Aangan Exhibition - a celebration of culture, crafts, and women entrepreneurs" />
-      <meta property="og:site_name" content="Aangan Exhibition" />
+      <meta property="og:site_name" content="AANGAN Exhibition" />
       <meta property="og:locale" content="en_IN" />
 
       <meta name="twitter:card" content="summary_large_image" />

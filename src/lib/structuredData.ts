@@ -1,11 +1,11 @@
-import { SITE_URL } from '@/lib/seoConfig';
+import { pageUrl, SITE_URL } from '@/lib/seoConfig';
 
 export const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'Aangan Exhibition',
-  alternateName: 'आंगण Exhibition',
-  url: SITE_URL,
+  name: 'AANGAN – The Grand Exhibition',
+  alternateName: ['Aangan Exhibition', 'आंगण Exhibition'],
+  url: `${SITE_URL}/`,
   logo: `${SITE_URL}/aangan-logo.png`,
   description:
     'Aangan Exhibition is one of the best exhibitions in Amravati and the Vidarbha region, celebrating Indian culture, handicrafts, fashion, and women entrepreneurs.',
@@ -35,18 +35,26 @@ interface EventInput {
   startDate: string;
   endDate: string;
   location: string;
+  /** Street or area shown on the site, e.g. "Jatharpeth Road". */
+  streetAddress?: string;
   /** City for the address; defaults to Amravati. */
   locality?: string;
   description: string;
 }
+
+/**
+ * Opening hours aren't published, so the event data carries the calendar date only
+ * (YYYY-MM-DD) rather than the internal times editions.ts uses to decide when an edition is over.
+ */
+const dateOnly = (iso: string) => iso.slice(0, 10);
 
 export function eventSchema(event: EventInput) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Event',
     name: event.name,
-    startDate: event.startDate,
-    endDate: event.endDate,
+    startDate: dateOnly(event.startDate),
+    endDate: dateOnly(event.endDate),
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     eventStatus: 'https://schema.org/EventScheduled',
     location: {
@@ -54,6 +62,7 @@ export function eventSchema(event: EventInput) {
       name: event.location,
       address: {
         '@type': 'PostalAddress',
+        ...(event.streetAddress ? { streetAddress: event.streetAddress } : {}),
         addressLocality: event.locality ?? 'Amravati',
         addressRegion: 'Maharashtra',
         addressCountry: 'IN',
@@ -62,9 +71,10 @@ export function eventSchema(event: EventInput) {
     description: event.description,
     organizer: {
       '@type': 'Organization',
-      name: 'Aangan Exhibition',
-      url: SITE_URL,
+      name: 'AANGAN – The Grand Exhibition',
+      url: `${SITE_URL}/`,
     },
+    url: `${SITE_URL}/`,
     image: `${SITE_URL}/preview.jpg`,
   };
 }
@@ -77,7 +87,7 @@ export function breadcrumbSchema(items: { name: string; path: string }[]) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: `${SITE_URL}${item.path}`,
+      item: pageUrl(item.path),
     })),
   };
 }

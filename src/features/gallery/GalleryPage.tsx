@@ -15,8 +15,8 @@ const GalleryPage = () => {
   return (
     <>
       <Seo
-        title="Exhibition Highlights & Video Gallery | Aangan Exhibition Amravati"
-        description="Watch highlights from Aangan Exhibition, Amravati's best exhibition for shopping, fashion, handicrafts, and cultural celebrations across Vidarbha."
+        title="Video Gallery | Aangan Exhibition Highlights, Amravati"
+        description="Watch highlights from Aangan Exhibition in Amravati: shopping, fashion, handicrafts and cultural celebrations with women entrepreneurs from across Vidarbha."
         path="/videos"
         keywords="Aangan Exhibition videos, Amravati exhibition highlights, exhibition gallery Amravati, exhibition in Vidarbha video"
         structuredData={[
