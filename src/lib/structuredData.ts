@@ -30,6 +30,15 @@ export const organizationSchema = {
   ],
 };
 
+/** Tells Google which name to show for the site in search results. Homepage only. */
+export const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'AANGAN Exhibition',
+  alternateName: ['Aangan Exhibition', 'आंगण – The Grand Exhibition'],
+  url: `${SITE_URL}/`,
+};
+
 interface EventInput {
   name: string;
   startDate: string;

@@ -12,7 +12,7 @@ import { editions, getPastEditions, getUpcomingEditions, stallsEdition, type Edi
 import { site, stats } from '@/data/site';
 import { useNow } from '@/lib/useNow';
 import { cn } from '@/lib/utils';
-import { organizationSchema, eventSchema, breadcrumbSchema } from '@/lib/structuredData';
+import { organizationSchema, eventSchema, breadcrumbSchema, websiteSchema } from '@/lib/structuredData';
 
 const unique = (lists: string[][]) => Array.from(new Set(lists.flat()));
 const shopItems = unique(editions.map((edition) => edition.shop));
@@ -80,6 +80,7 @@ const Home = () => {
         path="/"
         keywords="best exhibition in Amravati, Makar Sankranti exhibition Akola, exhibition in Akola, Makar Sankranti exhibition Amravati, exhibition in Vidarbha, Amravati exhibition, best shopping platform in Amravati, women entrepreneurs Amravati, handicraft exhibition Amravati, cultural exhibition Vidarbha"
         structuredData={[
+          websiteSchema,
           organizationSchema,
           breadcrumbSchema([{ name: 'Home', path: '/' }]),
           ...upcoming.map((edition) =>
