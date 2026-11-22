@@ -38,7 +38,7 @@ jobs:
 
       - name: Check every route was pre-rendered
         run: |
-          for page in index.html about/index.html contact/index.html videos/index.html stalls/index.html stalls/akola/index.html 404.html; do
+          for page in index.html about/index.html contact/index.html videos/index.html stalls/index.html stalls/akola/index.html stalls/amravati/index.html 404.html; do
             grep -q '<title' "dist/$page" || { echo "dist/$page is missing or has no <title>"; exit 1; }
           done
 

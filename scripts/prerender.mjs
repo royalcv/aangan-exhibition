@@ -17,6 +17,7 @@ const routes = [
   { url: '/videos', file: 'videos/index.html' },
   { url: '/stalls', file: 'stalls/index.html' },
   { url: '/stalls/akola', file: 'stalls/akola/index.html' },
+  { url: '/stalls/amravati', file: 'stalls/amravati/index.html' },
   { url: '/404', file: '404.html' },
 ];
 

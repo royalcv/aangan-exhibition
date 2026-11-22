@@ -8,7 +8,8 @@ import { compareStalls, maskStall, stallSourceSchema, toStallStatus, type Stall 
  * per row). Only rows marked Available, Booked or Reserved are kept; blocked, held or blank rows are
  * dropped. A booked or reserved stall's number is masked here before it is sent, so the page can
  * show a blurred tile for it without the real number reaching a browser.
- * The script must send the booked rows too, or the Booked and All counts only show free stalls.
+ * The script must send the booked rows too, or booked stalls are missing from the page.
+ * The total number of stalls is not sent: the site doesn't show it.
  * The response is cached for a minute so a busy page doesn't hammer Google.
  * Set STALLS_ENDPOINT / STALLS_ENDPOINT_AKOLA in the Netlify UI to point at a different script.
  */
@@ -84,7 +85,6 @@ export default async (request: Request, context: Context) => {
     {
       ok: true,
       updatedAt,
-      total: stalls.length,
       available: count('available'),
       booked: count('booked'),
       reserved: count('reserved'),

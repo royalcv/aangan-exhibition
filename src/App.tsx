@@ -14,6 +14,7 @@ import { akolaStallsEdition } from "./data/editions";
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Stalls = lazy(() => import("./pages/Stalls"));
+const StallsIndex = lazy(() => import("./pages/StallsIndex"));
 const GalleryPage = lazy(() => import("./features/gallery").then((module) => ({ default: module.GalleryPage })));
 
 /** After the outgoing page has faded, reset scroll and move focus to <main> for keyboard and screen-reader users. */
@@ -43,7 +44,8 @@ const AnimatedRoutes: React.FC = () => {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/videos" element={<GalleryPage />} />
-            <Route path="/stalls" element={<Stalls />} />
+            <Route path="/stalls" element={<StallsIndex />} />
+            <Route path="/stalls/amravati" element={<Stalls />} />
             <Route path="/stalls/akola" element={<Stalls edition={akolaStallsEdition} />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

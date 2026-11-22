@@ -40,11 +40,11 @@ export type Stall = { stall: string; status: StallStatus };
 /**
  * What the website receives: every stall, already sorted, with the counts. A booked or reserved
  * stall's number is masked on the server (see maskStall), so the page can show a blurred tile for it
- * without the real number ever being in the browser.
+ * without the real number ever being in the browser. There's no total: the number of stalls isn't
+ * shown on the site, so it isn't sent either.
  */
 export type StallFeed = {
   updatedAt: string;
-  total: number;
   available: number;
   booked: number;
   reserved: number;

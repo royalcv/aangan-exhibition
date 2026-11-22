@@ -81,7 +81,7 @@ export const editions: Edition[] = [
     shop: [],
     experience: [],
     directions: mapsLink('Abhiyanta Bhavan, Shegaon Naka, Amravati'),
-    stallsPage: '/stalls',
+    stallsPage: '/stalls/amravati',
     stallsFeed: '/api/stalls',
     stallAvailabilityEnabled: true,
     schemaName: 'AANGAN Makar Sankranti Special – Amravati',
@@ -91,8 +91,8 @@ export const editions: Edition[] = [
 ];
 
 /**
- * The Amravati edition: the /stalls page (live sheet: GET /api/stalls) and the home hero are about
- * it. Akola has its own page at /stalls/akola (GET /api/stalls/akola).
+ * The Amravati edition: /stalls/amravati (live sheet: GET /api/stalls) and the home hero are about
+ * it. Akola is on /stalls/akola (GET /api/stalls/akola); /stalls lets visitors pick one.
  */
 export const stallsEdition: Edition = editions.find((edition) => edition.id === 'makar-sankranti-2027')!;
 

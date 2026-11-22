@@ -43,7 +43,7 @@ const SiteHeader = () => {
 
         <nav aria-label="Main" className="hidden items-center gap-7 md:flex">
           {navItems.map((item) => (
-            <NavLink key={item.href} to={item.href} end className={linkClass}>
+            <NavLink key={item.href} to={item.href} end={item.href === '/'} className={linkClass}>
               {item.name}
             </NavLink>
           ))}
@@ -64,7 +64,8 @@ const SiteHeader = () => {
                 <NavLink
                   key={item.href}
                   to={item.href}
-                  end
+                  // Exact match for Home only, so "Stalls" stays lit on /stalls/akola too.
+                  end={item.href === '/'}
                   onClick={() => setMenuOpen(false)}
                   className={({ isActive }) =>
                     cn(

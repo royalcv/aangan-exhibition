@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Bookmark, CalendarDays, CheckCircle2, Lock, MapPin, RefreshCw, TriangleAlert } from 'lucide-react';
+import { ArrowLeft, Bookmark, CalendarDays, CheckCircle2, Lock, MapPin, RefreshCw, TriangleAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Seo from '@/components/Seo';
 import WhatsAppButton, { WhatsAppIcon } from '@/components/WhatsAppButton';
@@ -23,8 +23,9 @@ const bookingLink = (edition: Edition, stall: string) =>
 
 const timeFormat = new Intl.DateTimeFormat('en-IN', { hour: 'numeric', minute: '2-digit' });
 
-const filters: { value: Filter; label: string; count: (feed: StallFeed) => number }[] = [
-  { value: 'all', label: 'All', count: (feed) => feed.total },
+// "All" has no count: the total number of stalls isn't shown.
+const filters: { value: Filter; label: string; count?: (feed: StallFeed) => number }[] = [
+  { value: 'all', label: 'All' },
   { value: 'available', label: 'Available', count: (feed) => feed.available },
   { value: 'booked', label: 'Booked', count: (feed) => feed.booked },
   // Only shown when the sheet has a reserved stall (see visibleFilters).
@@ -162,10 +163,8 @@ const Stalls = ({ edition: EVENT = stallsEdition }: { edition?: Edition }) => {
           organizationSchema,
           breadcrumbSchema([
             { name: 'Home', path: '/' },
-            {
-              name: EVENT === stallsEdition ? 'Stall availability' : `Stall availability – ${EVENT.city}`,
-              path: EVENT.stallsPage ?? '/stalls',
-            },
+            { name: 'Stall availability', path: '/stalls' },
+            { name: EVENT.city, path: EVENT.stallsPage ?? '/stalls' },
           ]),
         ]}
       />
@@ -174,7 +173,16 @@ const Stalls = ({ edition: EVENT = stallsEdition }: { edition?: Edition }) => {
       <section className="ink-band on-ink" aria-labelledby="stalls-title">
         <div className="page-wrap grid gap-10 py-14 md:grid-cols-[3fr_2fr] md:items-end md:py-20">
           <div>
-            <p className="font-display text-xl text-primary">{EVENT.name}</p>
+            <Link
+              to="/stalls"
+              className="mb-6 inline-flex min-h-11 items-center gap-2 font-semibold text-white/80 transition-colors hover:text-primary"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              All exhibitions
+            </Link>
+            <p className="font-display text-xl text-primary">
+              {EVENT.name}, {EVENT.city}
+            </p>
             <h1 id="stalls-title" className="mt-2 text-4xl text-white md:text-6xl">
               Stall availability
             </h1>
@@ -247,7 +255,7 @@ const Stalls = ({ edition: EVENT = stallsEdition }: { edition?: Edition }) => {
                     )}
                   >
                     {option.label}
-                    {feed ? <span className="tabular-nums opacity-75">{option.count(feed)}</span> : null}
+                    {feed && option.count ? <span className="tabular-nums opacity-75">{option.count(feed)}</span> : null}
                   </button>
                 ))}
               </div>
@@ -288,7 +296,7 @@ const Stalls = ({ edition: EVENT = stallsEdition }: { edition?: Edition }) => {
                         <span className="text-base font-normal text-muted-foreground">
                           {activeFilter === 'booked' || activeFilter === 'reserved'
                             ? `${group.shown.length} ${activeFilter}`
-                            : `${group.available} of ${group.stalls.length} available`}
+                            : `${group.available} available`}
                         </span>
                       </h2>
                       <ul className={cn(gridClass, 'mt-4')}>
