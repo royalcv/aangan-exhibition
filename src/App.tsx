@@ -8,6 +8,7 @@ import MotionProvider from "./design/MotionProvider";
 import { pageTransition } from "./design/motion";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import { akolaStallsEdition } from "./data/editions";
 
 // Home is the usual landing page, so it ships in the main bundle; the other pages are code-split.
 const About = lazy(() => import("./pages/About"));
@@ -43,6 +44,7 @@ const AnimatedRoutes: React.FC = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/videos" element={<GalleryPage />} />
             <Route path="/stalls" element={<Stalls />} />
+            <Route path="/stalls/akola" element={<Stalls edition={akolaStallsEdition} />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

@@ -1,24 +1,24 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CalendarDays, CheckCircle2, Lock, MapPin, RefreshCw, TriangleAlert } from 'lucide-react';
+import { Bookmark, CalendarDays, CheckCircle2, Lock, MapPin, RefreshCw, TriangleAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Seo from '@/components/Seo';
 import WhatsAppButton, { WhatsAppIcon } from '@/components/WhatsAppButton';
-import { fullVenue, stallsEdition as EVENT } from '@/data/editions';
+import { fullVenue, stallsEdition, type Edition } from '@/data/editions';
 import { site } from '@/data/site';
 import { groupStalls, type Stall, type StallFeed } from '@/lib/stalls';
 import { breadcrumbSchema, organizationSchema } from '@/lib/structuredData';
 import { cn } from '@/lib/utils';
 
-type Filter = 'all' | 'available' | 'booked';
+type Filter = 'all' | 'available' | 'booked' | 'reserved';
 type State = { kind: 'loading' } | { kind: 'error' } | { kind: 'ready'; feed: StallFeed; checkedAt: Date };
 
 /** Re-check when the visitor comes back to the tab after this long. */
 const STALE_AFTER_MS = 60_000;
 
-const bookingLink = (stall: string) =>
+const bookingLink = (edition: Edition, stall: string) =>
   `${site.whatsapp}?text=${encodeURIComponent(
-    `Hi Aangan! I'd like to book stall ${stall} at the ${EVENT.name} (${EVENT.dateLabel}). Is it still available?`,
+    `Hi Aangan! I'd like to book stall ${stall} at the ${edition.name} (${edition.dateLabel}). Is it still available?`,
   )}`;
 
 const timeFormat = new Intl.DateTimeFormat('en-IN', { hour: 'numeric', minute: '2-digit' });
@@ -27,6 +27,8 @@ const filters: { value: Filter; label: string; count: (feed: StallFeed) => numbe
   { value: 'all', label: 'All', count: (feed) => feed.total },
   { value: 'available', label: 'Available', count: (feed) => feed.available },
   { value: 'booked', label: 'Booked', count: (feed) => feed.booked },
+  // Only shown when the sheet has a reserved stall (see visibleFilters).
+  { value: 'reserved', label: 'Reserved', count: (feed) => feed.reserved ?? 0 },
 ];
 
 const gridClass = 'grid grid-cols-2 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8';
@@ -48,13 +50,32 @@ const BookedTile = ({ stall }: { stall: Stall }) => (
   </li>
 );
 
-const StallTile = ({ stall }: { stall: Stall }) =>
+/**
+ * A reserved stall: held for someone, so it can't be booked. Like a booked tile (number blurred,
+ * masked on the server), with a dashed border and its own label.
+ */
+const ReservedTile = ({ stall }: { stall: Stall }) => (
+  <li className="flex min-h-24 flex-col justify-between rounded-xl border-2 border-dashed border-foreground/40 bg-muted/40 p-3 text-muted-foreground">
+    <span className="select-none font-display text-2xl leading-none blur-[3px]" aria-hidden="true">
+      {stall.stall}
+    </span>
+    <span className="mt-3 inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-semibold">
+      <Bookmark className="h-4 w-4 shrink-0" aria-hidden="true" />
+      Reserved
+      <span className="sr-only"> stall</span>
+    </span>
+  </li>
+);
+
+const StallTile = ({ stall, edition }: { stall: Stall; edition: Edition }) =>
   stall.status === 'booked' ? (
     <BookedTile stall={stall} />
+  ) : stall.status === 'reserved' ? (
+    <ReservedTile stall={stall} />
   ) : (
     <li>
       <a
-        href={bookingLink(stall.stall)}
+        href={bookingLink(edition, stall.stall)}
         target="_blank"
         rel="noopener noreferrer"
         className="group flex h-full min-h-24 flex-col justify-between rounded-xl border-2 border-primary bg-primary/15 p-3 transition-colors duration-200 hover:bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -80,7 +101,8 @@ const SkeletonGrid = () => (
   </ul>
 );
 
-const Stalls = () => {
+/** The stall availability page for one edition: /stalls (Amravati) or /stalls/akola. */
+const Stalls = ({ edition: EVENT = stallsEdition }: { edition?: Edition }) => {
   const [state, setState] = useState<State>({ kind: 'loading' });
   const [filter, setFilter] = useState<Filter | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -89,7 +111,7 @@ const Stalls = () => {
   const load = useCallback(async () => {
     setRefreshing(true);
     try {
-      const response = await fetch('/api/stalls', { headers: { Accept: 'application/json' } });
+      const response = await fetch(EVENT.stallsFeed ?? '/api/stalls', { headers: { Accept: 'application/json' } });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const feed = (await response.json()) as StallFeed;
       checkedAt.current = Date.now();
@@ -100,7 +122,7 @@ const Stalls = () => {
     } finally {
       setRefreshing(false);
     }
-  }, []);
+  }, [EVENT.stallsFeed]);
 
   useEffect(() => {
     void load();
@@ -126,20 +148,24 @@ const Stalls = () => {
         : [],
     [feed, activeFilter],
   );
-  const canBook = activeFilter !== 'booked' && (feed?.available ?? 0) > 0;
+  const canBook = (activeFilter === 'all' || activeFilter === 'available') && (feed?.available ?? 0) > 0;
+  const visibleFilters = filters.filter((option) => option.value !== 'reserved' || (feed?.reserved ?? 0) > 0);
 
   return (
     <>
       <Seo
         title={`Stall Availability | Aangan Makar Sankranti, ${EVENT.city}`}
         description={`See which exhibitor stalls are still free at Aangan’s ${EVENT.name}, ${EVENT.dateLabel}, ${EVENT.venue}, ${EVENT.city}. Book on WhatsApp.`}
-        path="/stalls"
-        keywords="Aangan stall booking, exhibition stall Amravati, book stall Amravati exhibition, Makar Sankranti exhibition Amravati, exhibitor stall Vidarbha"
+        path={EVENT.stallsPage ?? '/stalls'}
+        keywords={`Aangan stall booking, exhibition stall ${EVENT.city}, book stall ${EVENT.city} exhibition, Makar Sankranti exhibition ${EVENT.city}, exhibitor stall Vidarbha`}
         structuredData={[
           organizationSchema,
           breadcrumbSchema([
             { name: 'Home', path: '/' },
-            { name: 'Stall availability', path: '/stalls' },
+            {
+              name: EVENT === stallsEdition ? 'Stall availability' : `Stall availability – ${EVENT.city}`,
+              path: EVENT.stallsPage ?? '/stalls',
+            },
           ]),
         ]}
       />
@@ -206,7 +232,7 @@ const Stalls = () => {
           <>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div role="group" aria-label="Show stalls" className="flex flex-wrap gap-2">
-                {filters.map((option) => (
+                {visibleFilters.map((option) => (
                   <button
                     key={option.value}
                     type="button"
@@ -244,7 +270,7 @@ const Stalls = () => {
                   </p>
                 ) : null}
 
-                {activeFilter !== 'booked' && feed.available === 0 ? (
+                {(activeFilter === 'all' || activeFilter === 'available') && feed.available === 0 ? (
                   <p className="mt-10 text-lg">
                     Every stall is booked for this edition. Message us to join the waiting list.
                   </p>
@@ -260,15 +286,15 @@ const Stalls = () => {
                       <h2 id={headingId} className="flex flex-wrap items-baseline gap-x-3 text-2xl">
                         {group.prefix} stalls
                         <span className="text-base font-normal text-muted-foreground">
-                          {activeFilter === 'booked'
-                            ? `${group.shown.length} booked`
+                          {activeFilter === 'booked' || activeFilter === 'reserved'
+                            ? `${group.shown.length} ${activeFilter}`
                             : `${group.available} of ${group.stalls.length} available`}
                         </span>
                       </h2>
                       <ul className={cn(gridClass, 'mt-4')}>
                         {group.shown.map((stall, index) => (
                           // Index too: masked booked stalls share a label, and the sheet can repeat a number.
-                          <StallTile key={`${stall.stall}-${index}`} stall={stall} />
+                          <StallTile key={`${stall.stall}-${index}`} stall={stall} edition={EVENT} />
                         ))}
                       </ul>
                     </div>

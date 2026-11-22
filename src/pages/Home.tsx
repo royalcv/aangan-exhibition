@@ -8,7 +8,7 @@ import { GalleryPreview, UpcomingPreview } from '@/features/gallery';
 import SankrantiHero from '@/features/sankranti/SankrantiHero';
 import Rangoli from '@/design/Rangoli';
 import StallAvailabilityButton from '@/components/StallAvailabilityButton';
-import { editions, getPastEditions, getUpcomingEditions, stallsEdition, type Edition } from '@/data/editions';
+import { editions, getPastEditions, getUpcomingEditions, liveStallEditions, stallsEdition, type Edition } from '@/data/editions';
 import { site, stats } from '@/data/site';
 import { useNow } from '@/lib/useNow';
 import { cn } from '@/lib/utils';
@@ -216,11 +216,14 @@ const Home = () => {
             <p className="mt-3 text-lg">See which stalls are still free, then message us to book one.</p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Button asChild variant="ink" className="h-auto min-h-11 whitespace-normal py-2 text-center">
-              <Link to={stallsEdition.stallsPage ?? '/stalls'}>
-                Check stall availability – {stallsEdition.city} ({stallsEdition.shortDate})
-              </Link>
-            </Button>
+            {/* One button per edition whose stall page is live; falls back to Amravati's once all have passed. */}
+            {(liveStallEditions(now).length > 0 ? liveStallEditions(now) : [stallsEdition]).map((edition) => (
+              <Button key={edition.id} asChild variant="ink" className="h-auto min-h-11 whitespace-normal py-2 text-center">
+                <Link to={edition.stallsPage ?? '/stalls'}>
+                  Check stall availability – {edition.city} ({edition.shortDate})
+                </Link>
+              </Button>
+            ))}
             <WhatsAppButton />
           </div>
         </div>

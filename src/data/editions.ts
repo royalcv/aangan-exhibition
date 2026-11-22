@@ -31,6 +31,8 @@ export type Edition = {
   directions: string;
   /** Link to the stall availability page for this edition. */
   stallsPage?: string;
+  /** The live stall feed that page reads (netlify/functions/stalls.mts picks the sheet from it). */
+  stallsFeed?: string;
   /**
    * Flip to true when this edition's stall availability is live. While false, the
    * "Check Stall Availability" button shows as a disabled "Coming Soon" button.
@@ -56,8 +58,9 @@ export const editions: Edition[] = [
     shop: [],
     experience: [],
     directions: 'https://maps.app.goo.gl/1Bus6L6PzvQsgHBg7',
-    stallsPage: '/stalls',
-    stallAvailabilityEnabled: false,
+    stallsPage: '/stalls/akola',
+    stallsFeed: '/api/stalls/akola',
+    stallAvailabilityEnabled: true,
     schemaName: 'AANGAN Makar Sankranti Special – Akola',
     schemaDescription:
       'Makar Sankranti Special Exhibition of Aangan Exhibition at Hotel Shagun, Jatharpeth Road, Akola.',
@@ -79,6 +82,7 @@ export const editions: Edition[] = [
     experience: [],
     directions: mapsLink('Abhiyanta Bhavan, Shegaon Naka, Amravati'),
     stallsPage: '/stalls',
+    stallsFeed: '/api/stalls',
     stallAvailabilityEnabled: true,
     schemaName: 'AANGAN Makar Sankranti Special – Amravati',
     schemaDescription:
@@ -87,10 +91,17 @@ export const editions: Edition[] = [
 ];
 
 /**
- * The edition the /stalls page (and its live sheet, GET /api/stalls) is about. Change the id here
- * if the stall sheet is switched to another edition.
+ * The Amravati edition: the /stalls page (live sheet: GET /api/stalls) and the home hero are about
+ * it. Akola has its own page at /stalls/akola (GET /api/stalls/akola).
  */
 export const stallsEdition: Edition = editions.find((edition) => edition.id === 'makar-sankranti-2027')!;
+
+/** The Akola edition, shown on /stalls/akola. */
+export const akolaStallsEdition: Edition = editions.find((edition) => edition.id === 'makar-sankranti-2027-akola')!;
+
+/** Editions whose stall availability page is live, in date order. */
+export const liveStallEditions = (now: Date = new Date()): Edition[] =>
+  getUpcomingEditions(now).filter((edition) => edition.stallAvailabilityEnabled && edition.stallsPage);
 
 /** "Abhiyanta Bhavan, Shegaon Naka, Amravati" */
 export const fullVenue = (edition: Edition) => `${edition.venue}, ${edition.area}`;

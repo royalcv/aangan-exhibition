@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-export type StallStatus = 'available' | 'booked';
+export type StallStatus = 'available' | 'booked' | 'reserved';
 
 /**
- * Only these two words count. Anything else in the sheet's Booked/Avaliable column ("Blocked",
+ * Only these three words count. Anything else in the sheet's Booked/Avaliable column ("Blocked",
  * "Hold", a name, a blank cell) returns null, and that stall is left off the website entirely.
  * The Apps Script applies the same rule; repeating it here means the site stays right even if the
  * script is changed or an older version is still deployed.
@@ -12,6 +12,7 @@ export const toStallStatus = (value: string): StallStatus | null => {
   const word = value.toLowerCase().replace(/[^a-z]/g, '');
   if (word === 'booked' || word === 'book') return 'booked';
   if (['available', 'avaliable', 'availabe', 'avail', 'avl'].includes(word)) return 'available';
+  if (['reserved', 'reserve', 'resv', 'rsvd'].includes(word)) return 'reserved';
   return null;
 };
 
@@ -21,6 +22,8 @@ export const toStallStatus = (value: string): StallStatus | null => {
  * the sheet can reach a visitor.
  */
 export const stallSourceSchema = z.object({
+  /** Which edition the sheet says it is; checked so two scripts' URLs can't be mixed up. */
+  edition: z.string().optional(),
   updatedAt: z.string().datetime(),
   stalls: z
     .array(
@@ -35,18 +38,25 @@ export const stallSourceSchema = z.object({
 
 export type Stall = { stall: string; status: StallStatus };
 /**
- * What the website receives: every stall, already sorted, with the counts. A booked stall's number
- * is masked on the server (see maskStall), so the page can show a blurred tile for it without the
- * real number ever being in the browser.
+ * What the website receives: every stall, already sorted, with the counts. A booked or reserved
+ * stall's number is masked on the server (see maskStall), so the page can show a blurred tile for it
+ * without the real number ever being in the browser.
  */
-export type StallFeed = { updatedAt: string; total: number; available: number; booked: number; stalls: Stall[] };
+export type StallFeed = {
+  updatedAt: string;
+  total: number;
+  available: number;
+  booked: number;
+  reserved: number;
+  stalls: Stall[];
+};
 
 /** Sorts W2 before W10. */
 export const compareStalls = (a: Stall, b: Stall) =>
   a.stall.localeCompare(b.stall, 'en', { numeric: true, sensitivity: 'base' });
 
 /**
- * Stand-in for a booked stall's number: the letters stay (they pick the group), every digit
+ * Stand-in for a booked or reserved stall's number: the letters stay (they pick the group), every digit
  * becomes 8, so W1 → W8 and W12 → W88. The page blurs this, and it reads as "something is written
  * here" without being the real number.
  */
